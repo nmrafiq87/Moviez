@@ -3,11 +3,7 @@ package in.appcrew.moviez.movie;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 
-import java.util.ArrayList;
-
-import data.Result;
 import data.source.MovieRepository;
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.ViewModelHolder;
@@ -20,10 +16,6 @@ public class MovieActivity extends AppCompatActivity{
     public static final String IMAGE_API = "https://image.tmdb.org/t/p/w500/";
     private MovieFragment movieFragment;
     private MoviesViewModel moviesViewModel;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<Result> mMovieList = new ArrayList<>();
     public static final String MOVIES_VIEWMODEL_TAG = "MOVIES_VIEWMODEL_TAG";
 
 

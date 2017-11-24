@@ -36,19 +36,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.BindingHolde
         return new BindingHolder(binding);
     }
 
-//    }
-
-//    public static class ViewHolder extends RecyclerView.ViewHolder {
-//        // each data item is just a string in this case
-//        public TextView mTextView;
-//        public SimpleDraweeView mImageView;
-//        public ViewHolder(View v) {
-//            super(v);
-//            mTextView = (TextView) v.findViewById(R.id.txt_name);
-//            mImageView = (SimpleDraweeView)v.findViewById(R.id.img_movie);
-//        }
-//    }
-
     @Override
     public void onBindViewHolder(BindingHolder holder, int position) {
         MovieRowBinding binding = holder.binding;
@@ -66,11 +53,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.BindingHolde
         notifyDataSetChanged();
     }
 
-//    @Override
-//    public void onBindViewHolder(ViewHolder holder, int position) {
-//        holder.mTextView.setText(mMovieList.get(position).getTitle());
-//        holder.mImageView.setImageURI(Uri.parse(MovieActivity.IMAGE_API + mMovieList.get(position).getBackdropPath()));
-//    }
 
     @Override
     public int getItemViewType(int position) {
