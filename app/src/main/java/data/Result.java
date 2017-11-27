@@ -10,6 +10,11 @@ import java.util.List;
 public class Result implements Serializable
 {
 
+    public Result(String title, String backdropPath){
+        this.title = title;
+        this.backdropPath = backdropPath;
+    }
+
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;

@@ -39,11 +39,6 @@ public class MovieViewModel extends BaseObservable {
             }
         });
     }
-//    @Bindable
-//    public String getTitle() {
-//        return mMovie.get().getTitle();
-//    }
-
 
 
     public void setMovieList(Result movie){
