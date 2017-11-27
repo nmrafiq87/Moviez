@@ -11,5 +11,5 @@ import retrofit2.http.Query;
 
 public interface MovieInterface {
     @GET("discover/movie")
-    Call<Movie> getMovie(@Query("api_key") String apiKey);
+    Call<Movie> getMovie(@Query("api_key") String apiKey,@Query("page") int page);
 }

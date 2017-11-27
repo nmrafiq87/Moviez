@@ -9,6 +9,7 @@ import android.databinding.ObservableList;
 
 import java.util.ArrayList;
 
+import data.Movie;
 import data.Result;
 import data.source.MovieDataSource;
 import data.source.MovieRepository;
@@ -24,7 +25,11 @@ public class MoviesViewModel extends BaseObservable {
     final ObservableField<String> snackbarText = new ObservableField<>();
     private final MovieRepository mMovieRepository;
     private final ObservableBoolean mIsDataLoadingError = new ObservableBoolean(false);
+    private int totalPage = 0;
+    private int currentPage = 1;
+    private boolean isLoading = false;
     private Context mContext; // To avoid leaks, this must be an Application Context.
+    private MovieNavigator mNavigator;
 
     public MoviesViewModel(
             MovieRepository repository,
@@ -39,23 +44,21 @@ public class MoviesViewModel extends BaseObservable {
         loadTasks(true);
     }
 
+    public boolean isLoading(){
+        return isLoading;
+    }
+
     public void loadTasks(final boolean showLoadingUI) {
+        isLoading = true;
         if (showLoadingUI) {
             dataLoading.set(true);
         }
-        mMovieRepository.getMovies(new MovieDataSource.LoadMoviesCallback() {
+        mMovieRepository.getMovies(currentPage, new MovieDataSource.LoadMoviesCallback() {
             @Override
-            public void onMoviesLoaded(ArrayList<Result> movies) {
-                // This callback may be called twice, once for the cache and once for loading
-                // the data from the server API, so we check before decrementing, otherwise
-                // it throws "Counter has been corrupted!" exception.
-//                if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-//                    EspressoIdlingResource.decrement(); // Set app as idle.
-//                }
-                ArrayList<Result> moviesToShow = new ArrayList<Result>();
-                for (Result movie : movies) {
-                    moviesToShow.add(movie);
-                }
+            public void onMoviesLoaded(Movie movies) {
+                isLoading = false;
+                currentPage = movies.getPage() + 1;
+                ArrayList<Result> moviesToShow = movies.getResults();
                 if (showLoadingUI) {
                     dataLoading.set(false);
                 }
@@ -66,8 +69,10 @@ public class MoviesViewModel extends BaseObservable {
 
             @Override
             public void onDataNotAvailable() {
+                isLoading = false;
                 mIsDataLoadingError.set(true);
             }
         });
     }
+
 }

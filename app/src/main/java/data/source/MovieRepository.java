@@ -2,11 +2,8 @@ package data.source;
 
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
-
 import ApiInterface.MovieInterface;
 import data.Movie;
-import data.Result;
 import in.appcrew.moviez.movie.MovieActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,18 +29,17 @@ public class MovieRepository implements MovieDataSource {
     }
 
     @Override
-    public void getMovies(@NonNull final LoadMoviesCallback callback) {
+    public void getMovies(final int page, @NonNull final LoadMoviesCallback callback) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MovieActivity.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MovieInterface movieService = retrofit.create(MovieInterface.class);
-        Call<Movie> call = movieService.getMovie(API_KEY);
+        Call<Movie> call = movieService.getMovie(API_KEY,page);
         call.enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-                ArrayList<Result> mMovieList = response.body().getResults();
-                callback.onMoviesLoaded(mMovieList);
+                callback.onMoviesLoaded(response.body());
             }
 
             @Override

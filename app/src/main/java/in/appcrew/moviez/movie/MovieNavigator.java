@@ -5,5 +5,5 @@ package in.appcrew.moviez.movie;
  */
 
 public interface  MovieNavigator {
-
+    void onLoadMore();
 }

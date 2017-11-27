@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,11 @@ import data.Result;
 import in.appcrew.moviez.databinding.FragmentMovieBinding;
 
 
-public class MovieFragment extends Fragment {
+public class MovieFragment extends Fragment  {
     private MoviesViewModel mMoviesViewModel;
+    private boolean isLoading;
+    private int visibleThreshold = 5;
+    private int lastVisibleItem, totalItemCount;
     private FragmentMovieBinding mMovieFragBinding;
     public MovieFragment() {
 
@@ -63,12 +67,26 @@ public class MovieFragment extends Fragment {
     }
 
     private void setupListAdapter() {
-        RecyclerView listView =  mMovieFragBinding.movieRecyclerView;
+        RecyclerView recyclerView =  mMovieFragBinding.movieRecyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         MovieAdapter movieAdapter = new MovieAdapter(new ArrayList<Result>(),getActivity());
-        listView.setAdapter(movieAdapter);
-        listView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    }
+        movieAdapter.setHasStableIds(true);
+        recyclerView.setAdapter(movieAdapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
+                totalItemCount = linearLayoutManager.getItemCount();
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                Log.d("Total Last Visible Item", totalItemCount + " " + lastVisibleItem);
+                if (!mMoviesViewModel.isLoading() && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                    mMoviesViewModel.loadTasks(false);
+                }
+            }
+        });
+    }
 
 
     // TODO: Rename method, update argument and hook method into UI event

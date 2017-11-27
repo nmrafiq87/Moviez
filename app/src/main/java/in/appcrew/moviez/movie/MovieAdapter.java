@@ -49,14 +49,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.BindingHolde
     }
 
     public void replaceData(ArrayList<Result> movies){
-        this.mMovieList = movies;
+        this.mMovieList.addAll(movies);
         notifyDataSetChanged();
     }
-
 
     @Override
     public int getItemViewType(int position) {
         return super.getItemViewType(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return mMovieList.get(position).getId();
     }
 
     @Override

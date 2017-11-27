@@ -14,12 +14,14 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 
+import data.Movie;
 import data.Result;
 import data.source.MovieDataSource;
 import data.source.MovieRepository;
 import in.appcrew.moviez.movie.MovieActivity;
 import in.appcrew.moviez.movie.MoviesViewModel;
 
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,8 +32,9 @@ import static org.mockito.Mockito.when;
  */
 public class MoviesViewModelTest {
 
+    private static Movie MOVIE;
     private static ArrayList<Result> MOVIES;
-    private static ArrayList<Result> EMPTY_MOVIES;
+    private static int PAGE_SIZE = 1;
 
     @Mock
     private MovieRepository mMoviesRepository;
@@ -60,6 +63,10 @@ public class MoviesViewModelTest {
         MOVIES = new ArrayList<>();
         MOVIES.add(new Result("Test","abc.jpg"));
         MOVIES.add(new Result("Test 1","def.jpg"));
+        MOVIE = new Movie();
+        MOVIE.setResults(MOVIES);
+        MOVIE.setPage(1);
+        MOVIE.setTotalPages(3);
     }
 
     private void setupContext() {
@@ -78,11 +85,12 @@ public class MoviesViewModelTest {
         // When loading of Tasks is requested
         // Callback is captured and invoked with stubbed tasks
         mMoviesViewModel.loadTasks(true);
-        verify(mMoviesRepository).getMovies(mLoadTasksCallbackCaptor.capture());
+        Assert.assertTrue(mMoviesViewModel.isLoading());
+        verify(mMoviesRepository).getMovies(eq(MOVIE.getPage()),mLoadTasksCallbackCaptor.capture());
         // Then progress indicator is shown
         Assert.assertTrue(mMoviesViewModel.dataLoading.get());
-        mLoadTasksCallbackCaptor.getValue().onMoviesLoaded(MOVIES);
-
+        mLoadTasksCallbackCaptor.getValue().onMoviesLoaded(MOVIE);
+        Assert.assertFalse(mMoviesViewModel.isLoading());
         // Then progress indicator is hidden
         Assert.assertFalse(mMoviesViewModel.dataLoading.get());
 
@@ -92,6 +100,8 @@ public class MoviesViewModelTest {
 
         mLoadTasksCallbackCaptor.getValue().onDataNotAvailable();
         Assert.assertFalse(mMoviesViewModel.dataLoading.get());
+        Assert.assertFalse(mMoviesViewModel.dataLoading.get());
+
     }
 
 
