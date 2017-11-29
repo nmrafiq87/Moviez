@@ -1,16 +1,19 @@
 package in.appcrew.moviez.movie;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import data.source.MovieRepository;
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.ViewModelHolder;
+import in.appcrew.moviez.moviedetail.MovieDetailActivity;
 import in.appcrew.moviez.utils.ActivityUtils;
 
 
-public class MovieActivity extends AppCompatActivity{
+public class MovieActivity extends AppCompatActivity implements MovieItemNavigator{
     public static final String BASE_URL = "https://api.themoviedb.org/3/";
     public static final String API_KEY = "0e12101a22c608993caa890e9dabea92";
     public static final String IMAGE_API = "https://image.tmdb.org/t/p/w500/";
@@ -65,4 +68,10 @@ public class MovieActivity extends AppCompatActivity{
         return movieFragment;
     }
 
+    @Override
+    public void onItemClick(String movieId) {
+        Log.d("On Item Clicked","On Item Clicked" + movieId);
+        Intent intent = new Intent(this, MovieDetailActivity.class);
+        startActivity(intent);
+    }
 }

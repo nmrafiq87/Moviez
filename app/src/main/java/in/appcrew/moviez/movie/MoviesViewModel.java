@@ -29,7 +29,7 @@ public class MoviesViewModel extends BaseObservable {
     private int currentPage = 1;
     private boolean isLoading = false;
     private Context mContext; // To avoid leaks, this must be an Application Context.
-    private MovieNavigator mNavigator;
+    private MovieItemNavigator mNavigator;
 
     public MoviesViewModel(
             MovieRepository repository,
@@ -56,17 +56,20 @@ public class MoviesViewModel extends BaseObservable {
         mMovieRepository.getMovies(currentPage, new MovieDataSource.LoadMoviesCallback() {
             @Override
             public void onMoviesLoaded(Movie movies) {
+                if (movies != null && movies.getPage() != null) {
+                    currentPage = movies.getPage() + 1;
+                    if (movies.getResults()!=null){
+                        ArrayList<Result> moviesToShow = movies.getResults();
+                        item.clear();
+                        item.addAll(moviesToShow);
+                    }
+                }
                 isLoading = false;
-                currentPage = movies.getPage() + 1;
-                ArrayList<Result> moviesToShow = movies.getResults();
                 if (showLoadingUI) {
                     dataLoading.set(false);
                 }
                 mIsDataLoadingError.set(false);
-                item.clear();
-                item.addAll(moviesToShow);
             }
-
             @Override
             public void onDataNotAvailable() {
                 isLoading = false;

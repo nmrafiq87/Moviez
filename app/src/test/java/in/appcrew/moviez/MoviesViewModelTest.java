@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 public class MoviesViewModelTest {
 
     private static Movie MOVIE;
-    private static ArrayList<Result> MOVIES;
+    private static Movie EMPTY_MOVIE;
     private static int PAGE_SIZE = 1;
 
     @Mock
@@ -60,13 +60,17 @@ public class MoviesViewModelTest {
         // Get a reference to the class under test
         mMoviesViewModel = new MoviesViewModel(mMoviesRepository, mContext);
         // We initialise the tasks to 3, with one active and two completed
-        MOVIES = new ArrayList<>();
+        ArrayList<Result> MOVIES = new ArrayList<>();
         MOVIES.add(new Result("Test","abc.jpg"));
         MOVIES.add(new Result("Test 1","def.jpg"));
         MOVIE = new Movie();
+        EMPTY_MOVIE = new Movie();
         MOVIE.setResults(MOVIES);
         MOVIE.setPage(1);
         MOVIE.setTotalPages(3);
+        ArrayList<Result> EMPTY_MOVIES = new ArrayList<>();
+        EMPTY_MOVIE.setResults(EMPTY_MOVIES);
+
     }
 
     private void setupContext() {
@@ -80,15 +84,15 @@ public class MoviesViewModelTest {
     }
 
     @Test
-    public void loadAllTasksFromRepository_dataLoaded() {
+    public void loadAllMovies() {
         // Given an initialized TasksViewModel with initialized tasks
         // When loading of Tasks is requested
         // Callback is captured and invoked with stubbed tasks
         mMoviesViewModel.loadTasks(true);
         Assert.assertTrue(mMoviesViewModel.isLoading());
-        verify(mMoviesRepository).getMovies(eq(MOVIE.getPage()),mLoadTasksCallbackCaptor.capture());
         // Then progress indicator is shown
         Assert.assertTrue(mMoviesViewModel.dataLoading.get());
+        verify(mMoviesRepository).getMovies(eq(MOVIE.getPage()),mLoadTasksCallbackCaptor.capture());
         mLoadTasksCallbackCaptor.getValue().onMoviesLoaded(MOVIE);
         Assert.assertFalse(mMoviesViewModel.isLoading());
         // Then progress indicator is hidden
@@ -100,8 +104,19 @@ public class MoviesViewModelTest {
 
         mLoadTasksCallbackCaptor.getValue().onDataNotAvailable();
         Assert.assertFalse(mMoviesViewModel.dataLoading.get());
-        Assert.assertFalse(mMoviesViewModel.dataLoading.get());
+        Assert.assertFalse(mMoviesViewModel.isLoading());
 
+    }
+
+    @Test
+    public void loadEmptyMovies(){
+        mMoviesViewModel.loadTasks(true);
+        Assert.assertTrue(mMoviesViewModel.isLoading());
+        Assert.assertTrue(mMoviesViewModel.dataLoading.get());
+        verify(mMoviesRepository).getMovies(eq(MOVIE.getPage()),mLoadTasksCallbackCaptor.capture());
+        mLoadTasksCallbackCaptor.getValue().onMoviesLoaded(EMPTY_MOVIE);
+        Assert.assertFalse(mMoviesViewModel.isLoading());
+        Assert.assertFalse(mMoviesViewModel.dataLoading.get());
     }
 
 

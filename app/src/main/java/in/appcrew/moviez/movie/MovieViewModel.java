@@ -4,8 +4,8 @@ import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
-import android.view.View;
-import android.widget.Toast;
+
+import java.lang.ref.WeakReference;
 
 import data.Result;
 import data.source.MovieRepository;
@@ -16,14 +16,12 @@ import data.source.MovieRepository;
 
 public class MovieViewModel extends BaseObservable {
 
-    public final ObservableField<String> snackbarText = new ObservableField<>();
     public final ObservableField<String> title = new ObservableField<>();
-    public final ObservableField<String> description = new ObservableField<>();
-    public final ObservableField<String> imageUrl = new ObservableField<>();
+    public final ObservableField<String> id = new ObservableField<>();
     private final ObservableField<Result> mMovie = new ObservableField<>();
     private final MovieRepository mMovieRepository;
     private final Context mContext;
-    private boolean mIsDataLoading;
+    private WeakReference<MovieItemNavigator> mNavigator;
 
     public MovieViewModel(Context context, MovieRepository tasksRepository) {
         mContext = context.getApplicationContext(); // Force use of Application Context.
@@ -35,27 +33,28 @@ public class MovieViewModel extends BaseObservable {
                 Result movie = mMovie.get();
                 if (movie != null) {
                     title.set(movie.getTitle());
+                    id.set(String.valueOf(movie.getId()));
                 }
             }
         });
     }
 
+    public void setNavigator(MovieItemNavigator movieItemNavigator){
+        mNavigator = new WeakReference<>(movieItemNavigator);
+    }
 
-    public void setMovieList(Result movie){
+    public void taskClicked() {
+        if (id == null) {
+            // Click happened before task was loaded, no-op.
+            return;
+        }
+        if (mNavigator != null && mNavigator.get() != null) {
+            mNavigator.get().onItemClick(String.valueOf(id.get()));
+        }
+    }
+
+
+    public void setMovieList(Result movie) {
         mMovie.set(movie);
     }
-
-    public View.OnClickListener onReadMoreClicked() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), "Opens article detail", Toast.LENGTH_SHORT).show();
-//                setRead(true);
-            }
-        };
-    }
-
-
-
-
 }

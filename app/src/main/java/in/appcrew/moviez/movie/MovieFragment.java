@@ -70,7 +70,7 @@ public class MovieFragment extends Fragment  {
         RecyclerView recyclerView =  mMovieFragBinding.movieRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        MovieAdapter movieAdapter = new MovieAdapter(new ArrayList<Result>(),getActivity());
+        MovieAdapter movieAdapter = new MovieAdapter(new ArrayList<Result>(),getContext(),(MovieActivity)getActivity());
         movieAdapter.setHasStableIds(true);
         recyclerView.setAdapter(movieAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

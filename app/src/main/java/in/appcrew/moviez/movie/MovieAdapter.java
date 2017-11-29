@@ -19,12 +19,14 @@ import in.appcrew.moviez.databinding.MovieRowBinding;
 //Test
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.BindingHolder> {
     private ArrayList<Result> mMovieList = new ArrayList<>();
+    private MovieItemNavigator mMovieItemNavigator;
     private Context mContext;
 
 
-    public MovieAdapter(ArrayList<Result> mMovieList, Context mContext){
+    public MovieAdapter(ArrayList<Result> mMovieList,Context context, MovieActivity movieItemNavigator){
         this.mMovieList = mMovieList;
-        this.mContext = mContext;
+        this.mMovieItemNavigator = movieItemNavigator;
+        this.mContext = context;
     }
 
     @Override
@@ -44,6 +46,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.BindingHolde
                 new MovieRepository()
         );
         viewModel.setMovieList(mMovieList.get(position));
+        viewModel.setNavigator(mMovieItemNavigator);
         binding.setResult(mMovieList.get(position));
         binding.setViewmodel(viewModel);
     }
