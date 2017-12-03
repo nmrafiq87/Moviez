@@ -20,7 +20,7 @@ public class MovieActivity extends AppCompatActivity implements MovieItemNavigat
     private MovieFragment movieFragment;
     private MoviesViewModel moviesViewModel;
     public static final String MOVIES_VIEWMODEL_TAG = "MOVIES_VIEWMODEL_TAG";
-
+    public static final String MOVIE_ID = "MOVIE_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +72,7 @@ public class MovieActivity extends AppCompatActivity implements MovieItemNavigat
     public void onItemClick(String movieId) {
         Log.d("On Item Clicked","On Item Clicked" + movieId);
         Intent intent = new Intent(this, MovieDetailActivity.class);
+        intent.putExtra(MOVIE_ID,movieId);
         startActivity(intent);
     }
 }

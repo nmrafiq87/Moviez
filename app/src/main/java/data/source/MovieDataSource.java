@@ -3,6 +3,7 @@ package data.source;
 import android.support.annotation.NonNull;
 
 import data.Movie;
+import data.Movies;
 
 /**
  * Created by nmrafiq on 10/11/17.
@@ -11,23 +12,23 @@ import data.Movie;
 public interface MovieDataSource {
     interface LoadMoviesCallback {
 
-        void onMoviesLoaded(Movie movie);
+        void onMoviesLoaded(Movies movie);
 
         void onDataNotAvailable();
     }
 
     interface GetMovieCallback {
 
-        void onTaskLoaded(Movie movie);
+        void onMovieLoaded(Movie movie);
 
         void onDataNotAvailable();
     }
 
     void getMovies(int page, @NonNull LoadMoviesCallback callback);
 
-    void getMovie(@NonNull String taskId, @NonNull GetMovieCallback callback);
+    void getMovie(@NonNull String movieId, @NonNull GetMovieCallback callback);
 
-    void saveMovie(@NonNull Movie movie);
+    void saveMovie(@NonNull Movies movie);
 
     void refreshMovies();
 

@@ -1,4 +1,4 @@
-package in.appcrew.moviez.movie;
+package in.appcrew.moviez.utils;
 
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableList;
@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import data.Result;
+import in.appcrew.moviez.movie.MovieActivity;
+import in.appcrew.moviez.movie.MovieAdapter;
 
 /**
  * Created by nmrafiq on 17/11/17.

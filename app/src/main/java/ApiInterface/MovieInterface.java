@@ -1,8 +1,10 @@
 package ApiInterface;
 
 import data.Movie;
+import data.Movies;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -11,5 +13,8 @@ import retrofit2.http.Query;
 
 public interface MovieInterface {
     @GET("discover/movie")
-    Call<Movie> getMovie(@Query("api_key") String apiKey,@Query("page") int page);
+    Call<Movies> getMovies(@Query("api_key") String apiKey, @Query("page") int page);
+
+    @GET("movie/{movie_id}")
+    Call<Movie> getMovie( @Path("movie_id") String movieId, @Query("api_key") String apiKey);
 }

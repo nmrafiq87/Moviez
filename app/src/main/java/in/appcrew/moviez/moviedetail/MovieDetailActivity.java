@@ -1,31 +1,52 @@
 package in.appcrew.moviez.moviedetail;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 
+import data.source.MovieRepository;
 import in.appcrew.moviez.R;
+import in.appcrew.moviez.ViewModelHolder;
+import in.appcrew.moviez.movie.MovieActivity;
+import in.appcrew.moviez.utils.ActivityUtils;
 
 public class MovieDetailActivity extends AppCompatActivity {
+
+
+    private MovieDetailFragment mMovieDetailFragment;
+    private MovieDetailViewModel mMovieDetailViewModel;
+    public static final String TAG = "MOVIE_DETAIL_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mMovieDetailFragment = findOrCreateFragment();
+        mMovieDetailViewModel = findOrCreateViewModel();
+        mMovieDetailFragment.setDetailViewModel(mMovieDetailViewModel);
+        mMovieDetailFragment.setMovieId(getIntent().getStringExtra(MovieActivity.MOVIE_ID));
     }
+
+    private MovieDetailFragment findOrCreateFragment(){
+        MovieDetailFragment movieDetailFragment = (MovieDetailFragment)getSupportFragmentManager().findFragmentById(R.id.detail_content);
+        if (movieDetailFragment == null){
+            movieDetailFragment = new MovieDetailFragment().newInstance();
+        }
+        ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),movieDetailFragment,R.id.detail_content);
+        return movieDetailFragment;
+    }
+
+    private MovieDetailViewModel findOrCreateViewModel(){
+        ViewModelHolder<MovieDetailViewModel> retainedViewModel = (ViewModelHolder<MovieDetailViewModel>)getSupportFragmentManager().findFragmentByTag(TAG);
+        if (retainedViewModel != null && retainedViewModel.getViewmodel() != null){
+            return retainedViewModel.getViewmodel();
+        }else{
+            MovieDetailViewModel movieDetailViewModel = new MovieDetailViewModel(new MovieRepository(),getApplicationContext());
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                    retainedViewModel.createContainer(movieDetailViewModel),
+                    TAG);
+            return movieDetailViewModel;
+        }
+    }
+
 
 }

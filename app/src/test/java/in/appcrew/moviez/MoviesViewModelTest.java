@@ -14,7 +14,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 
-import data.Movie;
+import data.Movies;
 import data.Result;
 import data.source.MovieDataSource;
 import data.source.MovieRepository;
@@ -32,8 +32,8 @@ import static org.mockito.Mockito.when;
  */
 public class MoviesViewModelTest {
 
-    private static Movie MOVIE;
-    private static Movie EMPTY_MOVIE;
+    private static Movies MOVIE;
+    private static Movies EMPTY_MOVIE;
     private static int PAGE_SIZE = 1;
 
     @Mock
@@ -63,8 +63,8 @@ public class MoviesViewModelTest {
         ArrayList<Result> MOVIES = new ArrayList<>();
         MOVIES.add(new Result("Test","abc.jpg"));
         MOVIES.add(new Result("Test 1","def.jpg"));
-        MOVIE = new Movie();
-        EMPTY_MOVIE = new Movie();
+        MOVIE = new Movies();
+        EMPTY_MOVIE = new Movies();
         MOVIE.setResults(MOVIES);
         MOVIE.setPage(1);
         MOVIE.setTotalPages(3);

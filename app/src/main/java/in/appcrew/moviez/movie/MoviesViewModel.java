@@ -9,7 +9,7 @@ import android.databinding.ObservableList;
 
 import java.util.ArrayList;
 
-import data.Movie;
+import data.Movies;
 import data.Result;
 import data.source.MovieDataSource;
 import data.source.MovieRepository;
@@ -55,7 +55,7 @@ public class MoviesViewModel extends BaseObservable {
         }
         mMovieRepository.getMovies(currentPage, new MovieDataSource.LoadMoviesCallback() {
             @Override
-            public void onMoviesLoaded(Movie movies) {
+            public void onMoviesLoaded(Movies movies) {
                 if (movies != null && movies.getPage() != null) {
                     currentPage = movies.getPage() + 1;
                     if (movies.getResults()!=null){

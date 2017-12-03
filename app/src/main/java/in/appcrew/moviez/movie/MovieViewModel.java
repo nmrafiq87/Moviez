@@ -26,7 +26,6 @@ public class MovieViewModel extends BaseObservable {
     public MovieViewModel(Context context, MovieRepository tasksRepository) {
         mContext = context.getApplicationContext(); // Force use of Application Context.
         mMovieRepository = tasksRepository;
-        // Exposed observables depend on the mTaskObservable observable:
         mMovie.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable observable, int i) {
