@@ -1,0 +1,42 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="detailmodel"
+            type="in.appcrew.moviez.moviedetail.MovieDetailItemViewModel"/>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_12"
+        android:layout_marginLeft="@dimen/margin_12"
+        android:layout_marginRight="@dimen/margin_12"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text= "@{detailmodel.mTitleList}"
+            android:textSize="@dimen/margin_18"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            tools:text="Sample"/>
+
+        <TextView
+            android:id="@+id/txt_desc"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/margin_8"
+            android:textSize="@dimen/margin_20"
+            android:layout_height="wrap_content"
+            android:text="@{detailmodel.mDescList}"
+            tools:text="Desc"/>
+    </LinearLayout>
+
+</layout>

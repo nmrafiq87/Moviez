@@ -14,18 +14,14 @@ import data.source.MovieRepository;
  * Created by nmrafiq on 16/11/17.
  */
 
-public class MovieViewModel extends BaseObservable {
+public class MovieItemViewModel extends BaseObservable {
 
     public final ObservableField<String> title = new ObservableField<>();
     public final ObservableField<String> id = new ObservableField<>();
     private final ObservableField<Result> mMovie = new ObservableField<>();
-    private final MovieRepository mMovieRepository;
-    private final Context mContext;
     private WeakReference<MovieItemNavigator> mNavigator;
 
-    public MovieViewModel(Context context, MovieRepository tasksRepository) {
-        mContext = context.getApplicationContext(); // Force use of Application Context.
-        mMovieRepository = tasksRepository;
+    public MovieItemViewModel(Context context, MovieRepository tasksRepository) {
         mMovie.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable observable, int i) {

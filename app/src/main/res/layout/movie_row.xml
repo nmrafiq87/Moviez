@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="android.view.View" />
         <variable
@@ -9,12 +11,11 @@
 
         <variable
             name="viewmodel"
-            type="in.appcrew.moviez.movie.MovieViewModel"/>
+            type="in.appcrew.moviez.movie.MovieItemViewModel"/>
+
     </data>
         <FrameLayout
             android:id="@+id/movie_row_card"
-            xmlns:fresco="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
@@ -44,6 +45,7 @@
                             android:textStyle="bold"
                             android:text="@{viewmodel.title}"
                             tools:text="Movie Name" />
+
                 </LinearLayout>
         </FrameLayout>
 </layout>

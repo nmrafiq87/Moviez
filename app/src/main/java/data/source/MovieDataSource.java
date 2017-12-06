@@ -2,7 +2,7 @@ package data.source;
 
 import android.support.annotation.NonNull;
 
-import data.Movie;
+import data.MovieData;
 import data.Movies;
 
 /**
@@ -19,7 +19,7 @@ public interface MovieDataSource {
 
     interface GetMovieCallback {
 
-        void onMovieLoaded(Movie movie);
+        void onMovieLoaded(MovieData movie);
 
         void onDataNotAvailable();
     }

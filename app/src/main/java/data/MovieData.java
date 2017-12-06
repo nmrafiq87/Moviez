@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Movie implements Parcelable
+public class MovieData implements Parcelable
 {
 
     @SerializedName("adult")
@@ -87,24 +87,24 @@ public class Movie implements Parcelable
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;
-    public final static Parcelable.Creator<Movie> CREATOR = new Creator<Movie>() {
+    public final static Parcelable.Creator<MovieData> CREATOR = new Creator<MovieData>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
+        public MovieData createFromParcel(Parcel in) {
+            return new MovieData(in);
         }
 
-        public Movie[] newArray(int size) {
-            return (new Movie[size]);
+        public MovieData[] newArray(int size) {
+            return (new MovieData[size]);
         }
 
     }
             ;
 
-    protected Movie(Parcel in) {
+    protected MovieData(Parcel in) {
         this.adult = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
         this.backdropPath = ((String) in.readValue((String.class.getClassLoader())));
         this.belongsToCollection = ((Object) in.readValue((Object.class.getClassLoader())));
@@ -131,7 +131,7 @@ public class Movie implements Parcelable
         this.voteCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
     }
 
-    public Movie() {
+    public MovieData() {
     }
 
     public Boolean getAdult() {

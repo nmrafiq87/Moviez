@@ -3,7 +3,7 @@ package data.source;
 import android.support.annotation.NonNull;
 
 import ApiInterface.MovieInterface;
-import data.Movie;
+import data.MovieData;
 import data.Movies;
 import in.appcrew.moviez.movie.MovieActivity;
 import retrofit2.Call;
@@ -26,15 +26,15 @@ public class MovieRepository implements MovieDataSource {
     public void getMovie(@NonNull String movieId, @NonNull final GetMovieCallback callback) {
         RETROFIT_INSTANCE = getRetroFit();
         MovieInterface movieService = RETROFIT_INSTANCE.create(MovieInterface.class);
-        Call<Movie> call = movieService.getMovie(movieId,API_KEY);
-        call.enqueue(new Callback<Movie>() {
+        Call<MovieData> call = movieService.getMovie(movieId,API_KEY);
+        call.enqueue(new Callback<MovieData>() {
             @Override
-            public void onResponse(Call<Movie> call, Response<Movie> response) {
+            public void onResponse(Call<MovieData> call, Response<MovieData> response) {
                 callback.onMovieLoaded(response.body());
             }
 
             @Override
-            public void onFailure(Call<Movie> call, Throwable t) {
+            public void onFailure(Call<MovieData> call, Throwable t) {
                 callback.onDataNotAvailable();
 
             }

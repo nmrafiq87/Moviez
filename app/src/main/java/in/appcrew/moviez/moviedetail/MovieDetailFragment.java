@@ -3,7 +3,10 @@ package in.appcrew.moviez.moviedetail;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,23 +36,6 @@ public class MovieDetailFragment extends Fragment {
         return fragment;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MovieDetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MovieDetailFragment newInstance(String param1, String param2) {
-        MovieDetailFragment fragment = new MovieDetailFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public void setDetailViewModel(MovieDetailViewModel mMovieDetailViewModel){
         this.mMovieDetailViewModel = mMovieDetailViewModel;
@@ -85,4 +71,17 @@ public class MovieDetailFragment extends Fragment {
         return fragmentMovieDetailBinding.getRoot();
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setUpAdapter();
+    }
+
+    public void setUpAdapter(){
+        RecyclerView recyclerView =  fragmentMovieDetailBinding.movieList;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        MovieDetailAdapter movieAdapter = new MovieDetailAdapter(getActivity());
+        movieAdapter.setHasStableIds(true);
+        recyclerView.setAdapter(movieAdapter);
+    }
 }
