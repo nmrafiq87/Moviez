@@ -20,6 +20,7 @@ import in.appcrew.moviez.databinding.MovieRowBinding;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.BindingHolder> {
     private ArrayList<Result> mMovieList = new ArrayList<>();
     private MovieItemNavigator mMovieItemNavigator;
+
     private Context mContext;
 
 
@@ -41,7 +42,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.BindingHolde
     @Override
     public void onBindViewHolder(BindingHolder holder, int position) {
         MovieRowBinding binding = holder.binding;
-
         final MovieItemViewModel viewModel = new MovieItemViewModel(mContext,
                 new MovieRepository()
         );

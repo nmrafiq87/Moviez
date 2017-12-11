@@ -20,7 +20,7 @@ import in.appcrew.moviez.databinding.FragmentMovieBinding;
 public class MovieFragment extends Fragment  {
     private MoviesViewModel mMoviesViewModel;
     private boolean isLoading;
-    private int visibleThreshold = 5;
+    private int visibleThreshold = 8;
     private int lastVisibleItem, totalItemCount;
     private FragmentMovieBinding mMovieFragBinding;
     public MovieFragment() {

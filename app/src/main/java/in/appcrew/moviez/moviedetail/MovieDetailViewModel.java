@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.util.Log;
 
@@ -27,6 +28,7 @@ public class MovieDetailViewModel extends BaseObservable {
     public ObservableField<String> mBackdropImage = new ObservableField<>();
     public ObservableArrayList<String> mTitleList = new ObservableArrayList<>();
     public ObservableArrayList<String> mDescList = new ObservableArrayList<>();
+    public ObservableBoolean mLove = new ObservableBoolean();
     private MovieRepository mMovieRepository;
     private Context mContext;
 
@@ -43,8 +45,6 @@ public class MovieDetailViewModel extends BaseObservable {
                 if (movie != null) {
                     mTitle.set(movie.getTitle());
                     mBackdropImage.set(movie.getBackdropPath());
-                    mDescription.set(movie.getOverview());
-                    mVoteAverage.set(String.valueOf(movie.getVoteAverage()));
                     mDescList.addAll(getDescList(movie));
                 }
             }
@@ -54,9 +54,8 @@ public class MovieDetailViewModel extends BaseObservable {
 
     public void start(String movieId){
         loadMovies(movieId);
+        getLove();
     }
-
-
 
     private void loadMovies(final String movieId){
         mMovieRepository = new MovieRepository();
@@ -98,7 +97,8 @@ public class MovieDetailViewModel extends BaseObservable {
     public String getGenre(List<Genre> genreList){
         StringBuilder sb = new StringBuilder();
         for (int i=0;i<genreList.size();i++){
-            sb.append(genreList.get(i).getName() + ", ");
+            sb.append(genreList.get(i).getName());
+            sb.append(", ");
         }
         sb.deleteCharAt(sb.lastIndexOf(","));
         return sb.toString();
@@ -107,10 +107,19 @@ public class MovieDetailViewModel extends BaseObservable {
     public String getSpokenLanguages(List<SpokenLanguage> spokenList){
         StringBuilder sb = new StringBuilder();
         for (int i=0;i<spokenList.size();i++){
-            sb.append(spokenList.get(i).getName() + ", ");
+            sb.append(spokenList.get(i).getName());
+            sb.append(", ");
         }
         sb.deleteCharAt(sb.lastIndexOf(","));
         return sb.toString();
+    }
+
+    public void getLove(){
+        if (mLove.get()){
+            mLove.set(false);
+        }else{
+            mLove.set(true);
+        }
     }
 
 }
