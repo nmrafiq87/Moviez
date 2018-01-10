@@ -8,7 +8,7 @@ import android.databinding.ObservableField;
 import java.lang.ref.WeakReference;
 
 import data.Result;
-import data.source.MovieRepository;
+import data.source.MovieRemoteRepository;
 
 /**
  * Created by nmrafiq on 16/11/17.
@@ -21,7 +21,7 @@ public class MovieItemViewModel extends BaseObservable {
     private final ObservableField<Result> mMovie = new ObservableField<>();
     private WeakReference<MovieItemNavigator> mNavigator;
 
-    public MovieItemViewModel(Context context, MovieRepository tasksRepository) {
+    public MovieItemViewModel(Context context, MovieRemoteRepository tasksRepository) {
         mMovie.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable observable, int i) {

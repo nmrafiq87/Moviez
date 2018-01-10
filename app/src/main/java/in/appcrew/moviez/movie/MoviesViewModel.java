@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import data.Movies;
 import data.Result;
 import data.source.MovieDataSource;
-import data.source.MovieRepository;
+import data.source.MovieRemoteRepository;
 
 /**
  * Created by nmrafiq on 10/11/17.
@@ -23,16 +23,15 @@ public class MoviesViewModel extends BaseObservable {
     public final ObservableList<Result> item = new ObservableArrayList<>();
     public final ObservableBoolean dataLoading = new ObservableBoolean(false);
     final ObservableField<String> snackbarText = new ObservableField<>();
-    private final MovieRepository mMovieRepository;
+    private final MovieRemoteRepository mMovieRepository;
     private final ObservableBoolean mIsDataLoadingError = new ObservableBoolean(false);
     private int totalPage = 0;
     private int currentPage = 1;
     private boolean isLoading = false;
     private Context mContext; // To avoid leaks, this must be an Application Context.
-    private MovieItemNavigator mNavigator;
 
     public MoviesViewModel(
-            MovieRepository repository,
+            MovieRemoteRepository repository,
             Context context) {
         mContext = context.getApplicationContext(); // Force use of Application Context.
         mMovieRepository = repository;

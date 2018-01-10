@@ -1,20 +1,28 @@
 package in.appcrew.moviez.moviedetail;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
+import android.net.Uri;
 import android.util.Log;
 
+import java.lang.ref.WeakReference;
+import java.net.URI;
 import java.util.List;
 
 import data.Genre;
 import data.MovieData;
 import data.SpokenLanguage;
+import data.source.MovieContentProvider;
 import data.source.MovieDataSource;
-import data.source.MovieRepository;
+import data.source.MoviePersistentContract;
+import data.source.MovieRemoteRepository;
+import in.appcrew.moviez.movie.MovieItemNavigator;
 
 /**
  * Created by practo on 30/11/17.
@@ -28,15 +36,16 @@ public class MovieDetailViewModel extends BaseObservable {
     public ObservableField<String> mBackdropImage = new ObservableField<>();
     public ObservableArrayList<String> mTitleList = new ObservableArrayList<>();
     public ObservableArrayList<String> mDescList = new ObservableArrayList<>();
-    public ObservableBoolean mLove = new ObservableBoolean();
-    private MovieRepository mMovieRepository;
+    public ObservableInt mLove = new ObservableInt();
+    private MovieRemoteRepository mMovieRepository;
     private Context mContext;
 
 
-    MovieDetailViewModel(MovieRepository movieRepository, Context context){
+    MovieDetailViewModel(MovieRemoteRepository movieRepository, Context context){
         this.mMovieRepository = movieRepository;
         this.mContext = context;
         this.mTitleList = getTitleList();
+        mLove.set(1);
         mMovie.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable observable, int i) {
@@ -51,14 +60,27 @@ public class MovieDetailViewModel extends BaseObservable {
         });
     }
 
+    public void loveClicked(){
+        favouriteMovie();
+    }
+
+    private void favouriteMovie(){
+        Log.d("Click","Click done");
+//        mContext.getContentResolver().query()
+        ContentValues cv = new ContentValues();
+        cv.put(MoviePersistentContract.MovieEntry.MOVIE_ID,mMovie.get().getId());
+        cv.put(MoviePersistentContract.MovieEntry.MOVIE_NAME,mMovie.get().getOriginalTitle());
+        cv.put(MoviePersistentContract.MovieEntry.MOVIE_FAVOURITE,mLove.get());
+        Uri uri = mContext.getContentResolver().insert(MovieContentProvider.CONTENT_URI,cv);
+        Log.d("Uri"," "+ uri.toString());
+    }
 
     public void start(String movieId){
         loadMovies(movieId);
-        getLove();
     }
 
     private void loadMovies(final String movieId){
-        mMovieRepository = new MovieRepository();
+        mMovieRepository = new MovieRemoteRepository();
         mMovieRepository.getMovie(movieId, new MovieDataSource.GetMovieCallback() {
             @Override
             public void onMovieLoaded(MovieData movie) {
@@ -112,14 +134,6 @@ public class MovieDetailViewModel extends BaseObservable {
         }
         sb.deleteCharAt(sb.lastIndexOf(","));
         return sb.toString();
-    }
-
-    public void getLove(){
-        if (mLove.get()){
-            mLove.set(false);
-        }else{
-            mLove.set(true);
-        }
     }
 
 }

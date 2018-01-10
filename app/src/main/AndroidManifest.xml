@@ -22,7 +22,16 @@
         <activity
             android:name=".moviedetail.MovieDetailActivity"
             android:label="@string/title_activity_movie_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <provider
+            android:name="data.source.MovieContentProvider"
+            android:authorities="in.appcrew.moviez.data.provider"
+            android:exported="false"
+            android:protectionLevel="signature"
+            android:syncable="true"/>
+
     </application>
 
 </manifest>

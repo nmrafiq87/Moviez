@@ -18,9 +18,9 @@ import static in.appcrew.moviez.movie.MovieActivity.API_KEY;
  * Created by nmrafiq on 10/11/17.
  */
 
-public class MovieRepository implements MovieDataSource {
+public class MovieRemoteRepository implements MovieDataSource {
 
-    private static MovieRepository INSTANCE = null;
+    private static MovieRemoteRepository INSTANCE = null;
     private Retrofit RETROFIT_INSTANCE = null;
     @Override
     public void getMovie(@NonNull String movieId, @NonNull final GetMovieCallback callback) {
@@ -69,9 +69,9 @@ public class MovieRepository implements MovieDataSource {
 
     }
 
-    public static MovieRepository getInstance() {
+    public static MovieRemoteRepository getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new MovieRepository();
+            INSTANCE = new MovieRemoteRepository();
         }
         return INSTANCE;
     }

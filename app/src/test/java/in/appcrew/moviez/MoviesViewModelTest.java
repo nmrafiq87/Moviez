@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import data.Movies;
 import data.Result;
 import data.source.MovieDataSource;
-import data.source.MovieRepository;
+import data.source.MovieRemoteRepository;
 import in.appcrew.moviez.movie.MovieActivity;
 import in.appcrew.moviez.movie.MoviesViewModel;
 
@@ -37,7 +37,7 @@ public class MoviesViewModelTest {
     private static int PAGE_SIZE = 1;
 
     @Mock
-    private MovieRepository mMoviesRepository;
+    private MovieRemoteRepository mMoviesRepository;
 
     @Mock
     private Context mContext;

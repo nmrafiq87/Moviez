@@ -3,13 +3,14 @@ package in.appcrew.moviez.movie;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
 import data.Result;
-import data.source.MovieRepository;
+import data.source.MovieRemoteRepository;
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.databinding.MovieRowBinding;
 
@@ -20,7 +21,6 @@ import in.appcrew.moviez.databinding.MovieRowBinding;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.BindingHolder> {
     private ArrayList<Result> mMovieList = new ArrayList<>();
     private MovieItemNavigator mMovieItemNavigator;
-
     private Context mContext;
 
 
@@ -41,9 +41,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.BindingHolde
 
     @Override
     public void onBindViewHolder(BindingHolder holder, int position) {
+        Log.d("Position", " "+ position);
         MovieRowBinding binding = holder.binding;
         final MovieItemViewModel viewModel = new MovieItemViewModel(mContext,
-                new MovieRepository()
+                new MovieRemoteRepository()
         );
         viewModel.setMovieList(mMovieList.get(position));
         viewModel.setNavigator(mMovieItemNavigator);

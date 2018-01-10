@@ -1,14 +1,17 @@
 package in.appcrew.moviez.utils;
 
 import android.databinding.BindingAdapter;
+import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 
 import data.Result;
+import in.appcrew.moviez.R;
 import in.appcrew.moviez.movie.MovieActivity;
 import in.appcrew.moviez.movie.MovieAdapter;
 import in.appcrew.moviez.moviedetail.MovieDetailAdapter;
@@ -39,6 +42,16 @@ public class MovieListBindings {
             movieDetailAdapter.replaceData(arrListTitle,arrListDesc);
         }
     }
+
+    @BindingAdapter({"movieLove"})
+    public static void setMovieLove(FloatingActionButton floatingActionButton, ObservableInt mLove){
+        if (mLove.get() == 1){
+            floatingActionButton.setImageResource(R.drawable.ic_love_fill);
+        }else{
+            floatingActionButton.setImageResource(R.drawable.ic_love);
+        }
+    }
+
 
 
 
