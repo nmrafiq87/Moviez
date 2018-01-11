@@ -64,7 +64,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.BindingHolde
 
     @Override
     public long getItemId(int position) {
-        return mMovieList.get(position).getId();
+        return Long.valueOf(mMovieList.get(position).getId());
     }
 
     @Override

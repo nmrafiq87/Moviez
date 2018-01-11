@@ -1,7 +1,9 @@
 package in.appcrew.moviez.moviedetail;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.databinding.BaseObservable;
 import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
@@ -67,12 +69,25 @@ public class MovieDetailViewModel extends BaseObservable {
     private void favouriteMovie(){
         Log.d("Click","Click done");
 //        mContext.getContentResolver().query()
+        String[] selectionArgs = {""};
+        String selectionClause =  MoviePersistentContract.MovieEntry.MOVIE_ID + " = ?";
+        selectionArgs[0] = mMovie.get().getId();
+        Uri singleUri = ContentUris.withAppendedId(MovieContentProvider.CONTENT_URI,Long.valueOf(mMovie.get().getId()));
+        Cursor cursor = mContext.getContentResolver().query(singleUri,null,selectionClause,selectionArgs,null);
         ContentValues cv = new ContentValues();
+        Uri uri;
         cv.put(MoviePersistentContract.MovieEntry.MOVIE_ID,mMovie.get().getId());
         cv.put(MoviePersistentContract.MovieEntry.MOVIE_NAME,mMovie.get().getOriginalTitle());
         cv.put(MoviePersistentContract.MovieEntry.MOVIE_FAVOURITE,mLove.get());
-        Uri uri = mContext.getContentResolver().insert(MovieContentProvider.CONTENT_URI,cv);
-        Log.d("Uri"," "+ uri.toString());
+        if (cursor.getCount() == 0){
+            uri = mContext.getContentResolver().insert(MovieContentProvider.CONTENT_URI,cv);
+            Log.d("Uri"," "+ uri.toString());
+        }else{
+            int affectedRows = mContext.getContentResolver().update(MovieContentProvider.CONTENT_URI,cv,selectionClause,selectionArgs);
+            Log.d("Query ","Updated rows" + affectedRows);
+        }
+
+
     }
 
     public void start(String movieId){

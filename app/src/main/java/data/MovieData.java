@@ -35,7 +35,7 @@ public class MovieData implements Parcelable
     private String homepage;
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private String id;
     @SerializedName("imdb_id")
     @Expose
     private String imdbId;
@@ -111,7 +111,7 @@ public class MovieData implements Parcelable
         this.budget = ((Integer) in.readValue((Integer.class.getClassLoader())));
         in.readList(this.genres, (data.Genre.class.getClassLoader()));
         this.homepage = ((String) in.readValue((String.class.getClassLoader())));
-        this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.id = ((String) in.readValue((Integer.class.getClassLoader())));
         this.imdbId = ((String) in.readValue((String.class.getClassLoader())));
         this.originalLanguage = ((String) in.readValue((String.class.getClassLoader())));
         this.originalTitle = ((String) in.readValue((String.class.getClassLoader())));
@@ -182,11 +182,11 @@ public class MovieData implements Parcelable
         this.homepage = homepage;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

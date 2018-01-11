@@ -49,7 +49,7 @@ public class MovieContentProvider extends ContentProvider {
             case MOVIE_ID:
                 _id = ContentUris.parseId(uri);
                 retCursor = db.query(
-                        MoviePersistentContract.MovieEntry.MOVIE_FAVOURITE,
+                        MoviePersistentContract.MovieEntry.FAVOURITE_MOVIE_TABLE,
                         projection, selection,
                         selectionArgs,
                         null,
@@ -80,7 +80,18 @@ public class MovieContentProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        final SQLiteDatabase db = movieDbHelper.getWritableDatabase();
+        int affectedRows;
+        switch(uriMatcher.match(uri)){
+            case MOVIES:
+                affectedRows = db.update(MoviePersistentContract.MovieEntry.FAVOURITE_MOVIE_TABLE,values,selection,selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+        return affectedRows;
     }
 
     @Nullable
@@ -105,7 +116,8 @@ public class MovieContentProvider extends ContentProvider {
         // Use this on the URI passed into the function to notify any observers that the uri has
         // changed.
         getContext().getContentResolver().notifyChange(uri, null);
-        return returnUri;    }
+        return returnUri;
+    }
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
