@@ -18,7 +18,6 @@ import data.Movies;
 import data.Result;
 import data.source.MovieDataSource;
 import data.source.MovieRemoteRepository;
-import in.appcrew.moviez.movie.MovieActivity;
 import in.appcrew.moviez.movie.MoviesViewModel;
 
 import static org.mockito.Matchers.eq;
@@ -34,16 +33,12 @@ public class MoviesViewModelTest {
 
     private static Movies MOVIE;
     private static Movies EMPTY_MOVIE;
-    private static int PAGE_SIZE = 1;
 
     @Mock
     private MovieRemoteRepository mMoviesRepository;
 
     @Mock
     private Context mContext;
-
-    @Mock
-    private MovieActivity mMovieNavigator;
 
     @Captor
     private ArgumentCaptor<MovieDataSource.LoadMoviesCallback> mLoadTasksCallbackCaptor;
@@ -92,7 +87,7 @@ public class MoviesViewModelTest {
         Assert.assertTrue(mMoviesViewModel.isLoading());
         // Then progress indicator is shown
         Assert.assertTrue(mMoviesViewModel.dataLoading.get());
-        verify(mMoviesRepository).getMovies(eq(MOVIE.getPage()),mLoadTasksCallbackCaptor.capture());
+        verify(mMoviesRepository).getMovies(mContext,eq(MOVIE.getPage()),mLoadTasksCallbackCaptor.capture());
         mLoadTasksCallbackCaptor.getValue().onMoviesLoaded(MOVIE);
         Assert.assertFalse(mMoviesViewModel.isLoading());
         // Then progress indicator is hidden
