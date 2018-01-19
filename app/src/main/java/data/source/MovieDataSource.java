@@ -1,5 +1,7 @@
 package data.source;
 
+import android.content.Context;
+import android.graphics.Movie;
 import android.support.annotation.NonNull;
 
 import data.MovieData;
@@ -24,11 +26,19 @@ public interface MovieDataSource {
         void onDataNotAvailable();
     }
 
-    void getMovies(int page, @NonNull LoadMoviesCallback callback);
+    interface UpdateMovieCallback {
 
-    void getMovie(@NonNull String movieId, @NonNull GetMovieCallback callback);
+        void onMovieUpdated(MovieData movie);
 
-    void saveMovie(@NonNull Movies movie);
+    }
+
+    void getMovies(@NonNull Context context, int page, @NonNull LoadMoviesCallback callback);
+
+    void getMovie(@NonNull Context context, @NonNull String movieId, @NonNull GetMovieCallback callback);
+
+    void insertMovie(@NonNull Context context, @NonNull MovieData movie, @NonNull UpdateMovieCallback callback);
+
+    void updateMovie(@NonNull Context context, @NonNull MovieData movieData, @NonNull UpdateMovieCallback callback);
 
     void refreshMovies();
 

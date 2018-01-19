@@ -87,6 +87,9 @@ public class MovieData implements Parcelable
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;
+    @SerializedName("love")
+    @Expose
+    private Integer love;
     public final static Parcelable.Creator<MovieData> CREATOR = new Creator<MovieData>() {
 
 
@@ -129,6 +132,7 @@ public class MovieData implements Parcelable
         this.video = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
         this.voteAverage = ((Double) in.readValue((Double.class.getClassLoader())));
         this.voteCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.love = ((Integer) in.readValue((Integer.class.getClassLoader())));
     }
 
     public MovieData() {
@@ -326,6 +330,18 @@ public class MovieData implements Parcelable
         this.voteCount = voteCount;
     }
 
+    public Integer getLove() {
+        if (love == null){
+            return 0;
+        }else{
+            return love;
+        }
+    }
+
+    public void setLove(Integer love) {
+        this.love = love;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(adult);
         dest.writeValue(backdropPath);
@@ -351,6 +367,7 @@ public class MovieData implements Parcelable
         dest.writeValue(video);
         dest.writeValue(voteAverage);
         dest.writeValue(voteCount);
+        dest.writeValue(love);
     }
 
     public int describeContents() {

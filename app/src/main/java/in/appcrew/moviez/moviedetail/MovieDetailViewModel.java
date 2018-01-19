@@ -22,6 +22,7 @@ import data.MovieData;
 import data.SpokenLanguage;
 import data.source.MovieContentProvider;
 import data.source.MovieDataSource;
+import data.source.MovieLocalRepository;
 import data.source.MoviePersistentContract;
 import data.source.MovieRemoteRepository;
 import in.appcrew.moviez.movie.MovieItemNavigator;
@@ -31,23 +32,24 @@ import in.appcrew.moviez.movie.MovieItemNavigator;
  */
 
 public class MovieDetailViewModel extends BaseObservable {
-    private ObservableField<MovieData> mMovie = new ObservableField<>();
+    public ObservableField<MovieData> mMovie = new ObservableField<>();
     public ObservableField<String> mTitle = new ObservableField<>();
-    public ObservableField<String> mDescription = new ObservableField<>();
     public ObservableField<String> mVoteAverage = new ObservableField<>();
     public ObservableField<String> mBackdropImage = new ObservableField<>();
     public ObservableArrayList<String> mTitleList = new ObservableArrayList<>();
     public ObservableArrayList<String> mDescList = new ObservableArrayList<>();
     public ObservableInt mLove = new ObservableInt();
     private MovieRemoteRepository mMovieRepository;
+    private MovieLocalRepository mMovieLocalRepository;
     private Context mContext;
 
 
-    MovieDetailViewModel(MovieRemoteRepository movieRepository, Context context){
+    MovieDetailViewModel(MovieRemoteRepository movieRepository, MovieLocalRepository mMovieLocalRepository, Context context){
         this.mMovieRepository = movieRepository;
+        this.mMovieLocalRepository = mMovieLocalRepository;
         this.mContext = context;
         this.mTitleList = getTitleList();
-        mLove.set(1);
+        mLove.set(0);
         mMovie.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable observable, int i) {
@@ -62,50 +64,78 @@ public class MovieDetailViewModel extends BaseObservable {
         });
     }
 
-    public void loveClicked(){
-        favouriteMovie();
-    }
-
-    private void favouriteMovie(){
-        Log.d("Click","Click done");
-//        mContext.getContentResolver().query()
-        String[] selectionArgs = {""};
-        String selectionClause =  MoviePersistentContract.MovieEntry.MOVIE_ID + " = ?";
-        selectionArgs[0] = mMovie.get().getId();
-        Uri singleUri = ContentUris.withAppendedId(MovieContentProvider.CONTENT_URI,Long.valueOf(mMovie.get().getId()));
-        Cursor cursor = mContext.getContentResolver().query(singleUri,null,selectionClause,selectionArgs,null);
-        ContentValues cv = new ContentValues();
-        Uri uri;
-        cv.put(MoviePersistentContract.MovieEntry.MOVIE_ID,mMovie.get().getId());
-        cv.put(MoviePersistentContract.MovieEntry.MOVIE_NAME,mMovie.get().getOriginalTitle());
-        cv.put(MoviePersistentContract.MovieEntry.MOVIE_FAVOURITE,mLove.get());
-        if (cursor.getCount() == 0){
-            uri = mContext.getContentResolver().insert(MovieContentProvider.CONTENT_URI,cv);
-            Log.d("Uri"," "+ uri.toString());
-        }else{
-            int affectedRows = mContext.getContentResolver().update(MovieContentProvider.CONTENT_URI,cv,selectionClause,selectionArgs);
-            Log.d("Query ","Updated rows" + affectedRows);
-        }
-
-
-    }
-
     public void start(String movieId){
         loadMovies(movieId);
     }
 
+    // Load movie from remote repository
     private void loadMovies(final String movieId){
         mMovieRepository = new MovieRemoteRepository();
-        mMovieRepository.getMovie(movieId, new MovieDataSource.GetMovieCallback() {
+        mMovieRepository.getMovie(mContext, movieId, new MovieDataSource.GetMovieCallback() {
             @Override
             public void onMovieLoaded(MovieData movie) {
-                Log.d("Movie ", movie.getOriginalTitle());
                 mMovie.set(movie);
+                // Once successfully loaded use query the DB to populate whether the movie is favourite or not
+                loadMovieFromLocalRepository();
             }
 
             @Override
             public void onDataNotAvailable() {
                 Log.d("Movie Title","Movie Error");
+            }
+        });
+    }
+
+//     On clicking the love button verify whether the data exists or not, on basis of which
+//        either an insert or update is made
+    public void loveClicked(){
+        mMovieLocalRepository.getMovie(mContext, mMovie.get().getId(), new MovieDataSource.GetMovieCallback() {
+            @Override
+            public void onMovieLoaded(MovieData movie) {
+                updateMovie();
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                saveMovie();
+            }
+        });
+    }
+
+    private void loadMovieFromLocalRepository(){
+        mMovieLocalRepository.getMovie(mContext, mMovie.get().getId(), new MovieDataSource.GetMovieCallback() {
+            @Override
+            public void onMovieLoaded(MovieData movie) {
+                mMovie.get().setLove(movie.getLove());
+                if (movie.getLove() != null){
+                    mLove.set(movie.getLove());
+                }
+            }
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+
+    }
+
+
+    private void saveMovie(){
+        mMovieLocalRepository.insertMovie(mContext, mMovie.get(), new MovieDataSource.UpdateMovieCallback() {
+            @Override
+            public void onMovieUpdated(MovieData movie) {
+                mMovie.get().setLove(movie.getLove());
+                mLove.set(movie.getLove());
+            }
+        });
+    }
+
+    private void updateMovie(){
+        mMovieLocalRepository.updateMovie(mContext, mMovie.get(), new MovieDataSource.UpdateMovieCallback() {
+            @Override
+            public void onMovieUpdated(MovieData movie) {
+                mMovie.get().setLove(movie.getLove());
+                mLove.set(movie.getLove());
             }
         });
     }

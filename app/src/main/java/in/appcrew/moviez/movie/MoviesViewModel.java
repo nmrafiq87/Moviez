@@ -52,7 +52,7 @@ public class MoviesViewModel extends BaseObservable {
         if (showLoadingUI) {
             dataLoading.set(true);
         }
-        mMovieRepository.getMovies(currentPage, new MovieDataSource.LoadMoviesCallback() {
+        mMovieRepository.getMovies(mContext,currentPage, new MovieDataSource.LoadMoviesCallback() {
             @Override
             public void onMoviesLoaded(Movies movies) {
                 if (movies != null && movies.getPage() != null) {

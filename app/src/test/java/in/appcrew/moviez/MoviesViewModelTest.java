@@ -113,7 +113,7 @@ public class MoviesViewModelTest {
         mMoviesViewModel.loadTasks(true);
         Assert.assertTrue(mMoviesViewModel.isLoading());
         Assert.assertTrue(mMoviesViewModel.dataLoading.get());
-        verify(mMoviesRepository).getMovies(eq(MOVIE.getPage()),mLoadTasksCallbackCaptor.capture());
+        verify(mMoviesRepository).getMovies(mContext, eq(MOVIE.getPage()),mLoadTasksCallbackCaptor.capture());
         mLoadTasksCallbackCaptor.getValue().onMoviesLoaded(EMPTY_MOVIE);
         Assert.assertFalse(mMoviesViewModel.isLoading());
         Assert.assertFalse(mMoviesViewModel.dataLoading.get());

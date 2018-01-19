@@ -1,6 +1,8 @@
 package in.appcrew.moviez.utils;
 
+import android.database.Observable;
 import android.databinding.BindingAdapter;
+import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
 import android.net.Uri;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
+import data.MovieData;
 import data.Result;
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.movie.MovieActivity;
@@ -45,14 +48,10 @@ public class MovieListBindings {
 
     @BindingAdapter({"movieLove"})
     public static void setMovieLove(FloatingActionButton floatingActionButton, ObservableInt mLove){
-        if (mLove.get() == 1){
-            floatingActionButton.setImageResource(R.drawable.ic_love_fill);
-        }else{
-            floatingActionButton.setImageResource(R.drawable.ic_love);
-        }
+            if (mLove.get() == 1) {
+                floatingActionButton.setImageResource(R.drawable.ic_favorite_fill);
+            } else {
+                floatingActionButton.setImageResource(R.drawable.ic_favorite_border);
+            }
     }
-
-
-
-
 }

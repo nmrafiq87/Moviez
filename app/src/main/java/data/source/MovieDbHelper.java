@@ -17,6 +17,8 @@ public class MovieDbHelper extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = " TEXT";
     private static final String BOOLEAN_TYPE = " INTEGER";
     private static final String PRIMARY_KEY = " PRIMARY KEY";
+    private static final String DEFAULT = " DEFAULT";
+    private static final String ZERO = " 0";
     private static final String COMMA_SEP = ",";
 
 
@@ -24,7 +26,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + MoviePersistentContract.MovieEntry.FAVOURITE_MOVIE_TABLE + "(" +
                     MoviePersistentContract.MovieEntry.MOVIE_ID + TEXT_TYPE + PRIMARY_KEY + COMMA_SEP +
                     MoviePersistentContract.MovieEntry.MOVIE_NAME + TEXT_TYPE + COMMA_SEP +
-                    MoviePersistentContract.MovieEntry.MOVIE_FAVOURITE + BOOLEAN_TYPE +
+                    MoviePersistentContract.MovieEntry.MOVIE_FAVOURITE + BOOLEAN_TYPE + DEFAULT + ZERO +
                     " )";
 
     MovieDbHelper(Context context){

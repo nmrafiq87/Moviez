@@ -1,5 +1,6 @@
 package data.source;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import ApiInterface.MovieInterface;
@@ -23,7 +24,7 @@ public class MovieRemoteRepository implements MovieDataSource {
     private static MovieRemoteRepository INSTANCE = null;
     private Retrofit RETROFIT_INSTANCE = null;
     @Override
-    public void getMovie(@NonNull String movieId, @NonNull final GetMovieCallback callback) {
+    public void getMovie(Context context, @NonNull String movieId, @NonNull final GetMovieCallback callback) {
         RETROFIT_INSTANCE = getRetroFit();
         MovieInterface movieService = RETROFIT_INSTANCE.create(MovieInterface.class);
         Call<MovieData> call = movieService.getMovie(movieId,API_KEY);
@@ -42,7 +43,7 @@ public class MovieRemoteRepository implements MovieDataSource {
     }
 
     @Override
-    public void getMovies(final int page, @NonNull final LoadMoviesCallback callback) {
+    public void getMovies(Context context,final int page, @NonNull final LoadMoviesCallback callback) {
         RETROFIT_INSTANCE = getRetroFit();
         MovieInterface movieService = RETROFIT_INSTANCE.create(MovieInterface.class);
         Call<Movies> call = movieService.getMovies(API_KEY,page);
@@ -65,7 +66,12 @@ public class MovieRemoteRepository implements MovieDataSource {
     }
 
     @Override
-    public void saveMovie(@NonNull Movies movie) {
+    public void insertMovie(@NonNull Context context, @NonNull MovieData movie, @NonNull UpdateMovieCallback callback) {
+
+    }
+
+    @Override
+    public void updateMovie(@NonNull Context context, @NonNull MovieData movieData, @NonNull UpdateMovieCallback callback) {
 
     }
 
