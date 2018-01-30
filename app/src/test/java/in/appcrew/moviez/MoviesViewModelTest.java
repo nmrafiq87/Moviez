@@ -20,6 +20,7 @@ import data.source.MovieDataSource;
 import data.source.MovieRemoteRepository;
 import in.appcrew.moviez.movie.MoviesViewModel;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -46,7 +47,7 @@ public class MoviesViewModelTest {
     private MoviesViewModel mMoviesViewModel;
 
     @Before
-    public void setupTasksViewModel() {
+    public void setupViewModel() {
         // Mockito has a very convenient way to inject mocks by using the @Mock annotation. To
         // inject the mocks in the test the initMocks method needs to be called.
         MockitoAnnotations.initMocks(this);
@@ -87,7 +88,7 @@ public class MoviesViewModelTest {
         Assert.assertTrue(mMoviesViewModel.isLoading());
         // Then progress indicator is shown
         Assert.assertTrue(mMoviesViewModel.dataLoading.get());
-        verify(mMoviesRepository).getMovies(mContext,eq(MOVIE.getPage()),mLoadTasksCallbackCaptor.capture());
+        verify(mMoviesRepository).getMovies(any(Context.class),eq(MOVIE.getPage()),mLoadTasksCallbackCaptor.capture());
         mLoadTasksCallbackCaptor.getValue().onMoviesLoaded(MOVIE);
         Assert.assertFalse(mMoviesViewModel.isLoading());
         // Then progress indicator is hidden
@@ -108,7 +109,7 @@ public class MoviesViewModelTest {
         mMoviesViewModel.loadTasks(true);
         Assert.assertTrue(mMoviesViewModel.isLoading());
         Assert.assertTrue(mMoviesViewModel.dataLoading.get());
-        verify(mMoviesRepository).getMovies(mContext, eq(MOVIE.getPage()),mLoadTasksCallbackCaptor.capture());
+        verify(mMoviesRepository).getMovies(any(Context.class), eq(MOVIE.getPage()),mLoadTasksCallbackCaptor.capture());
         mLoadTasksCallbackCaptor.getValue().onMoviesLoaded(EMPTY_MOVIE);
         Assert.assertFalse(mMoviesViewModel.isLoading());
         Assert.assertFalse(mMoviesViewModel.dataLoading.get());

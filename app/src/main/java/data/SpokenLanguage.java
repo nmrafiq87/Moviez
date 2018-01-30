@@ -40,7 +40,9 @@ public class SpokenLanguage implements Parcelable
         this.name = ((String) in.readValue((String.class.getClassLoader())));
     }
 
-    public SpokenLanguage() {
+    public SpokenLanguage(String iso6391, String name) {
+        this.iso6391 = iso6391;
+        this.name = name;
     }
 
     public String getIso6391() {

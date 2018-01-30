@@ -38,13 +38,14 @@ public class MovieDetailViewModel extends BaseObservable {
     public ObservableField<String> mBackdropImage = new ObservableField<>();
     public ObservableArrayList<String> mTitleList = new ObservableArrayList<>();
     public ObservableArrayList<String> mDescList = new ObservableArrayList<>();
+    public ObservableField<String> mMovieId = new ObservableField<>();
     public ObservableInt mLove = new ObservableInt();
     private MovieRemoteRepository mMovieRepository;
     private MovieLocalRepository mMovieLocalRepository;
     private Context mContext;
 
 
-    MovieDetailViewModel(MovieRemoteRepository movieRepository, MovieLocalRepository mMovieLocalRepository, Context context){
+    public MovieDetailViewModel(MovieRemoteRepository movieRepository, MovieLocalRepository mMovieLocalRepository, Context context){
         this.mMovieRepository = movieRepository;
         this.mMovieLocalRepository = mMovieLocalRepository;
         this.mContext = context;
@@ -57,6 +58,7 @@ public class MovieDetailViewModel extends BaseObservable {
 
                 if (movie != null) {
                     mTitle.set(movie.getTitle());
+                    mMovieId.set(movie.getId());
                     mBackdropImage.set(movie.getBackdropPath());
                     mDescList.addAll(getDescList(movie));
                 }
@@ -69,8 +71,7 @@ public class MovieDetailViewModel extends BaseObservable {
     }
 
     // Load movie from remote repository
-    private void loadMovies(final String movieId){
-        mMovieRepository = new MovieRemoteRepository();
+    public void loadMovies(final String movieId){
         mMovieRepository.getMovie(mContext, movieId, new MovieDataSource.GetMovieCallback() {
             @Override
             public void onMovieLoaded(MovieData movie) {
@@ -81,7 +82,7 @@ public class MovieDetailViewModel extends BaseObservable {
 
             @Override
             public void onDataNotAvailable() {
-                Log.d("Movie Title","Movie Error");
+
             }
         });
     }
@@ -89,7 +90,7 @@ public class MovieDetailViewModel extends BaseObservable {
 //     On clicking the love button verify whether the data exists or not, on basis of which
 //        either an insert or update is made
     public void loveClicked(){
-        mMovieLocalRepository.getMovie(mContext, mMovie.get().getId(), new MovieDataSource.GetMovieCallback() {
+        mMovieLocalRepository.getMovie(mContext, mMovieId.get(), new MovieDataSource.GetMovieCallback() {
             @Override
             public void onMovieLoaded(MovieData movie) {
                 updateMovie();
@@ -102,25 +103,21 @@ public class MovieDetailViewModel extends BaseObservable {
         });
     }
 
-    private void loadMovieFromLocalRepository(){
-        mMovieLocalRepository.getMovie(mContext, mMovie.get().getId(), new MovieDataSource.GetMovieCallback() {
+    public void loadMovieFromLocalRepository(){
+        mMovieLocalRepository.getMovie(mContext, mMovieId.get(), new MovieDataSource.GetMovieCallback() {
             @Override
             public void onMovieLoaded(MovieData movie) {
                 mMovie.get().setLove(movie.getLove());
-                if (movie.getLove() != null){
-                    mLove.set(movie.getLove());
-                }
+                mLove.set(movie.getLove());
             }
             @Override
             public void onDataNotAvailable() {
 
             }
         });
-
     }
 
-
-    private void saveMovie(){
+    public void saveMovie(){
         mMovieLocalRepository.insertMovie(mContext, mMovie.get(), new MovieDataSource.UpdateMovieCallback() {
             @Override
             public void onMovieUpdated(MovieData movie) {
@@ -130,7 +127,7 @@ public class MovieDetailViewModel extends BaseObservable {
         });
     }
 
-    private void updateMovie(){
+    public void updateMovie(){
         mMovieLocalRepository.updateMovie(mContext, mMovie.get(), new MovieDataSource.UpdateMovieCallback() {
             @Override
             public void onMovieUpdated(MovieData movie) {

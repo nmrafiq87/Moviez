@@ -42,7 +42,9 @@ public class Genre implements Parcelable
         this.name = ((String) in.readValue((String.class.getClassLoader())));
     }
 
-    public Genre() {
+    public Genre(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public Integer getId() {
