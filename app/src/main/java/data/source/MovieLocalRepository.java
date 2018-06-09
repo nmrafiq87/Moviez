@@ -17,14 +17,13 @@ import data.Movies;
  * Created by nmrafiq on 13/12/17.
  */
 
-public class MovieLocalRepository implements MovieDataSource {
+public class MovieLocalRepository implements MovieDataSource{
 
     @Override
     public void getMovie(@NonNull Context context, @NonNull String movieId, @NonNull final GetMovieCallback callback) {
         String[] selectionArgs = {""};
         String selectionClause =  MoviePersistentContract.MovieEntry.MOVIE_ID + " = ?";
         selectionArgs[0] = movieId;
-        Uri uri = ContentUris.withAppendedId(MovieContentProvider.CONTENT_URI,Long.valueOf(movieId));
         AsyncQueryHandler asyncQueryHandler = new AsyncQueryHandler(context.getContentResolver()) {
             @Override
             protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
@@ -39,7 +38,7 @@ public class MovieLocalRepository implements MovieDataSource {
                 }
             }
         };
-        asyncQueryHandler.startQuery(0,null,uri,null,selectionClause,selectionArgs,null);
+        asyncQueryHandler.startQuery(0,null,MovieContentProvider.CONTENT_URI,null,selectionClause,selectionArgs,null);
     }
 
     @Override

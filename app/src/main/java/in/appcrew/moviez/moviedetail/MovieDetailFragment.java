@@ -1,11 +1,16 @@
 package in.appcrew.moviez.moviedetail;
 
 
-import android.content.ContentValues;
+import android.content.ContentUris;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import data.source.MovieContentProvider;
-import data.source.MovieDbHelper;
 import data.source.MoviePersistentContract;
 import in.appcrew.moviez.databinding.FragmentMovieDetailBinding;
 
@@ -23,7 +27,7 @@ import in.appcrew.moviez.databinding.FragmentMovieDetailBinding;
  * Use the {@link MovieDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MovieDetailFragment extends Fragment {
+public class MovieDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -80,6 +84,28 @@ public class MovieDetailFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setUpAdapter();
+        getActivity().getSupportLoaderManager().initLoader(0, null, this);
+
+    }
+
+    @Override
+    public Loader onCreateLoader(int id, Bundle args) {
+        String[] idArgument = {movieId};
+        return new CursorLoader(getActivity(),MovieContentProvider.CONTENT_URI,null,
+                MoviePersistentContract.MovieEntry.MOVIE_ID + "= ?",idArgument,null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader loader, Cursor cursor) {
+        if (cursor.moveToFirst()){
+            int love = cursor.getInt(cursor.getColumnIndex(MoviePersistentContract.MovieEntry.MOVIE_FAVOURITE));
+            mMovieDetailViewModel.mLove.set(love);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+
     }
 
     public void setUpAdapter(){

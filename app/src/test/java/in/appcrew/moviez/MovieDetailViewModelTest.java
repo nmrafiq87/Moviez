@@ -144,17 +144,6 @@ public class MovieDetailViewModelTest {
     }
 
     @Test
-    public void loadMovieFromLocalRepository(){
-        movieDetailViewModel.mMovie.set(MOVIE);
-        movieDetailViewModel.loadMovieFromLocalRepository();
-        verify(movieLocalRepository).getMovie(any(Context.class),eq(MOVIE.getId()),movieLocalCallbackCaptor.capture());
-        movieLocalCallbackCaptor.getValue().onMovieLoaded(MOVIE);
-        movieDetailViewModel.mMovie.set(MOVIE);
-        movieDetailViewModel.mLove.set(MOVIE.getLove());
-        Assert.assertTrue(movieDetailViewModel.mMovie.get().getLove() == movieDetailViewModel.mLove.get());
-    }
-
-    @Test
     public void favouriteClick(){
         movieDetailViewModel.loveClicked();
         verify(movieLocalRepository).getMovie(any(Context.class),any(String.class),movieLocalCallbackCaptor.capture());

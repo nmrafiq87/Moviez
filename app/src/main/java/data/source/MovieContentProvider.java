@@ -44,10 +44,8 @@ public class MovieContentProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         final SQLiteDatabase db = movieDbHelper.getWritableDatabase();
         Cursor retCursor;
-        long _id;
         switch(uriMatcher.match(uri)){
-            case MOVIE_ID:
-                _id = ContentUris.parseId(uri);
+            case MOVIES:
                 retCursor = db.query(
                         MoviePersistentContract.MovieEntry.FAVOURITE_MOVIE_TABLE,
                         projection, selection,
@@ -57,9 +55,11 @@ public class MovieContentProvider extends ContentProvider {
                         sortOrder
                 );
                 break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
     }
 

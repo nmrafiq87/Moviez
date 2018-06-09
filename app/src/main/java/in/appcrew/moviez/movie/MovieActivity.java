@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import data.source.MovieLocalRepository;
 import data.source.MovieRemoteRepository;
+import data.source.MovieRepository;
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.ViewModelHolder;
 import in.appcrew.moviez.moviedetail.MovieDetailActivity;
@@ -45,7 +47,7 @@ public class MovieActivity extends AppCompatActivity implements MovieItemNavigat
             return retainedViewModel.getViewmodel();
         } else {
             // There is no ViewModel yet, create it.
-            MoviesViewModel viewModel = new MoviesViewModel(MovieRemoteRepository.getInstance(), getApplicationContext());
+            MoviesViewModel viewModel = new MoviesViewModel(new MovieRepository(new MovieLocalRepository(),new MovieRemoteRepository()));
             // and bind it to this Activity's lifecycle using the Fragment Manager.
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(),

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import data.source.MovieLocalRepository;
 import data.source.MovieRemoteRepository;
+import data.source.MovieRepository;
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.ViewModelHolder;
 import in.appcrew.moviez.movie.MovieActivity;
@@ -41,7 +42,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         if (retainedViewModel != null && retainedViewModel.getViewmodel() != null){
             return retainedViewModel.getViewmodel();
         }else{
-            MovieDetailViewModel movieDetailViewModel = new MovieDetailViewModel(new MovieRemoteRepository(), new MovieLocalRepository(),getApplicationContext());
+            MovieDetailViewModel movieDetailViewModel = new MovieDetailViewModel(new MovieRepository(new MovieLocalRepository(),
+                    new MovieRemoteRepository()),getApplicationContext());
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                     retainedViewModel.createContainer(movieDetailViewModel),
                     TAG);
