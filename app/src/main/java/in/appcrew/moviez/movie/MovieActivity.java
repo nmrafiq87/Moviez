@@ -1,5 +1,6 @@
 package in.appcrew.moviez.movie;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,7 +21,6 @@ public class MovieActivity extends AppCompatActivity implements MovieItemNavigat
     public static final String API_KEY = "0e12101a22c608993caa890e9dabea92";
     public static final String IMAGE_API = "https://image.tmdb.org/t/p/w500/";
     private MovieFragment movieFragment;
-    private MoviesViewModel moviesViewModel;
     public static final String MOVIES_VIEWMODEL_TAG = "MOVIES_VIEWMODEL_TAG";
     public static final String MOVIE_ID = "MOVIE_ID";
 
@@ -29,32 +29,8 @@ public class MovieActivity extends AppCompatActivity implements MovieItemNavigat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moviez_home);
         movieFragment = findOrCreateViewFragment();
-        moviesViewModel= findOrCreateViewModel();
+        MoviesViewModel moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
         movieFragment.setViewModel(moviesViewModel);
-    }
-
-
-    private MoviesViewModel findOrCreateViewModel() {
-        // In a configuration change we might have a ViewModel present. It's retained using the
-        // Fragment Manager.
-        @SuppressWarnings("unchecked")
-        ViewModelHolder<MoviesViewModel> retainedViewModel =
-                (ViewModelHolder<MoviesViewModel>) getSupportFragmentManager()
-                        .findFragmentByTag(MOVIES_VIEWMODEL_TAG);
-
-        if (retainedViewModel != null && retainedViewModel.getViewmodel() != null) {
-            // If the model was retained, return it.
-            return retainedViewModel.getViewmodel();
-        } else {
-            // There is no ViewModel yet, create it.
-            MoviesViewModel viewModel = new MoviesViewModel(new MovieRepository(new MovieLocalRepository(),new MovieRemoteRepository()));
-            // and bind it to this Activity's lifecycle using the Fragment Manager.
-            ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(),
-                    ViewModelHolder.createContainer(viewModel),
-                    MOVIES_VIEWMODEL_TAG);
-            return viewModel;
-        }
     }
 
     @NonNull

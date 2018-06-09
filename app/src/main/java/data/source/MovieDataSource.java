@@ -32,7 +32,7 @@ public interface MovieDataSource {
 
     }
 
-    void getMovies(@NonNull Context context, int page, @NonNull LoadMoviesCallback callback);
+    void getMovies(int page, @NonNull LoadMoviesCallback callback);
 
     void getMovie(@NonNull Context context, @NonNull String movieId, @NonNull GetMovieCallback callback);
 

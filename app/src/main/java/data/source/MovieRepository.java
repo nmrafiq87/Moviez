@@ -16,8 +16,8 @@ public class MovieRepository implements MovieDataSource {
     }
 
     @Override
-    public void getMovies(@NonNull Context context, int page, @NonNull LoadMoviesCallback callback) {
-        movieRemoteRepository.getMovies(context,page,callback);
+    public void getMovies(int page, @NonNull LoadMoviesCallback callback) {
+        movieRemoteRepository.getMovies(page,callback);
     }
 
     @Override

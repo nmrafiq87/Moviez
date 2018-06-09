@@ -43,7 +43,7 @@ public class MovieRemoteRepository implements MovieDataSource {
     }
 
     @Override
-    public void getMovies(Context context,final int page, @NonNull final LoadMoviesCallback callback) {
+    public void getMovies(final int page, @NonNull final LoadMoviesCallback callback) {
         RETROFIT_INSTANCE = getRetroFit();
         MovieInterface movieService = RETROFIT_INSTANCE.create(MovieInterface.class);
         Call<Movies> call = movieService.getMovies(API_KEY,page);
