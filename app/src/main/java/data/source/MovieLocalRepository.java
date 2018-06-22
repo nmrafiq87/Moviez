@@ -42,7 +42,7 @@ public class MovieLocalRepository implements MovieDataSource{
     }
 
     @Override
-    public void getMovies(@NonNull Context context, int page, @NonNull final LoadMoviesCallback callback) {
+    public void getMovies(int page, @NonNull final LoadMoviesCallback callback) {
 
     }
 

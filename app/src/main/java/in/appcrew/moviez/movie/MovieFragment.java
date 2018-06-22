@@ -1,5 +1,6 @@
 package in.appcrew.moviez.movie;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,26 +15,23 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import data.Result;
+import data.source.MovieLocalRepository;
+import data.source.MovieRemoteRepository;
+import data.source.MovieRepository;
 import in.appcrew.moviez.databinding.FragmentMovieBinding;
 
 
 public class MovieFragment extends Fragment  {
-    private MoviesViewModel mMoviesViewModel;
-    private boolean isLoading;
+    private MoviesViewModel moviesViewModel;
     private int visibleThreshold = 8;
     private int lastVisibleItem, totalItemCount;
     private FragmentMovieBinding mMovieFragBinding;
-    public MovieFragment() {
-
-    }
+    private MovieAdapter movieAdapter;
+    private RecyclerView recyclerView;
 
     public static MovieFragment newInstance() {
         MovieFragment fragment = new MovieFragment();
         return fragment;
-    }
-
-    public void setViewModel(MoviesViewModel viewModel) {
-        mMoviesViewModel = viewModel;
     }
 
     @Override
@@ -45,7 +43,7 @@ public class MovieFragment extends Fragment  {
     @Override
     public void onStart() {
         super.onStart();
-        mMoviesViewModel.start();
+        moviesViewModel.start();
     }
 
     @Override
@@ -53,8 +51,6 @@ public class MovieFragment extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mMovieFragBinding = FragmentMovieBinding.inflate(inflater, container, false);
-        mMovieFragBinding.setView(this);
-        mMovieFragBinding.setViewmodel(mMoviesViewModel);
         View root = mMovieFragBinding.getRoot();
         return root;
     }
@@ -62,14 +58,18 @@ public class MovieFragment extends Fragment  {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
+        moviesViewModel.setMovieRepository(new MovieRepository(new MovieLocalRepository(), new MovieRemoteRepository()));
+        mMovieFragBinding.setViewmodel(moviesViewModel);
+        mMovieFragBinding.setView(this);
         setupListAdapter();
     }
 
     private void setupListAdapter() {
-        RecyclerView recyclerView =  mMovieFragBinding.movieRecyclerView;
+        recyclerView =  mMovieFragBinding.movieRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        MovieAdapter movieAdapter = new MovieAdapter(new ArrayList<Result>(),getContext(),(MovieActivity)getActivity());
+        movieAdapter = new MovieAdapter(new ArrayList<Result>(),getContext(),(MovieActivity)getActivity());
         movieAdapter.setHasStableIds(true);
         recyclerView.setAdapter(movieAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -80,13 +80,18 @@ public class MovieFragment extends Fragment  {
                 totalItemCount = linearLayoutManager.getItemCount();
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 Log.d("Total Last Visible Item", totalItemCount + " " + lastVisibleItem);
-                if (!mMoviesViewModel.isLoading() && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                    mMoviesViewModel.loadTasks(false);
+                if (!moviesViewModel.isLoading() && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                    moviesViewModel.loadTasks(false);
                 }
             }
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
 
     @Override
     public void onAttach(Context context) {

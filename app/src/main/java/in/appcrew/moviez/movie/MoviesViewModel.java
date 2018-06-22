@@ -24,15 +24,13 @@ public class MoviesViewModel extends ViewModel {
     // These observable fields will update Views automatically
     public final ObservableList<Result> item = new ObservableArrayList<>();
     public final ObservableBoolean dataLoading = new ObservableBoolean(false);
-    private final MovieRepository mMovieRepository;
+    private MovieRepository mMovieRepository;
     private final ObservableBoolean mIsDataLoadingError = new ObservableBoolean(false);
     private int currentPage = 1;
     private boolean isLoading = false;
 
-    public MoviesViewModel(MovieRepository repository) {
-        mMovieRepository = repository;
-        // Set initial state
-//        setFiltering(MovieFilterType.ALL_MOVIES);
+    public void setMovieRepository(MovieRepository movieRepository){
+        this.mMovieRepository = movieRepository;
     }
 
     public void start() {

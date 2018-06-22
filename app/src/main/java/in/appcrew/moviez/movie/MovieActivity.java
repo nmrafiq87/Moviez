@@ -29,8 +29,9 @@ public class MovieActivity extends AppCompatActivity implements MovieItemNavigat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moviez_home);
         movieFragment = findOrCreateViewFragment();
-        MoviesViewModel moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
-        movieFragment.setViewModel(moviesViewModel);
+//        MoviesViewModel moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
+//        moviesViewModel.setMovieRepository(new MovieRepository(new MovieLocalRepository(), new MovieRemoteRepository()));
+//        movieFragment.setMoviesViewModel(moviesViewModel);
     }
 
     @NonNull
