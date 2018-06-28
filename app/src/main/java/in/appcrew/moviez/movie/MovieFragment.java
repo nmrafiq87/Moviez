@@ -1,5 +1,6 @@
 package in.appcrew.moviez.movie;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -43,7 +44,7 @@ public class MovieFragment extends Fragment  {
     @Override
     public void onStart() {
         super.onStart();
-        moviesViewModel.start();
+        moviesViewModel.loadTasks(false);
     }
 
     @Override
@@ -63,6 +64,25 @@ public class MovieFragment extends Fragment  {
         mMovieFragBinding.setViewmodel(moviesViewModel);
         mMovieFragBinding.setView(this);
         setupListAdapter();
+
+        final Observer<ArrayList<Result>> movieListObserver = new Observer<ArrayList<Result>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<Result> results) {
+                if (movieAdapter != null){
+                    movieAdapter.replaceData(results);
+                }
+            }
+        };
+
+        final Observer<Boolean> movieProgressObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean movieProgress) {
+                mMovieFragBinding.progressBar.setVisibility(movieProgress ? View.VISIBLE : View.GONE);
+            }
+        };
+
+        moviesViewModel.item.observe(this,movieListObserver);
+        moviesViewModel.dataLoading.observe(this,movieProgressObserver);
     }
 
     private void setupListAdapter() {

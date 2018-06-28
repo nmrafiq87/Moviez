@@ -24,13 +24,6 @@ import in.appcrew.moviez.moviedetail.MovieDetailAdapter;
  */
 
 public class MovieListBindings {
-    @BindingAdapter({"bind:moviesList"})
-    public static void setMovieList(RecyclerView view, ObservableList<Result> movieList) {
-        MovieAdapter adapter = (MovieAdapter)view.getAdapter();
-        if (adapter != null) {
-            adapter.replaceData((ArrayList<Result>)movieList);
-        }
-    }
 
     @BindingAdapter({"bind:imgView"})
     public static void loadImage(ImageView imgView, String imgUrl) {

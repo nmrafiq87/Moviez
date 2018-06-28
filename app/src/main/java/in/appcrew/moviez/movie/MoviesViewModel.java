@@ -1,19 +1,12 @@
 package in.appcrew.moviez.movie;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
-import android.databinding.BaseObservable;
-import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
-import android.databinding.ObservableField;
-import android.databinding.ObservableList;
-
 import java.util.ArrayList;
-
 import data.Movies;
 import data.Result;
 import data.source.MovieDataSource;
-import data.source.MovieRemoteRepository;
 import data.source.MovieRepository;
 
 /**
@@ -22,8 +15,8 @@ import data.source.MovieRepository;
 
 public class MoviesViewModel extends ViewModel {
     // These observable fields will update Views automatically
-    public final ObservableList<Result> item = new ObservableArrayList<>();
-    public final ObservableBoolean dataLoading = new ObservableBoolean(false);
+    public final MutableLiveData<ArrayList<Result>> item = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> dataLoading = new MutableLiveData<>();
     private MovieRepository mMovieRepository;
     private final ObservableBoolean mIsDataLoadingError = new ObservableBoolean(false);
     private int currentPage = 1;
@@ -33,10 +26,6 @@ public class MoviesViewModel extends ViewModel {
         this.mMovieRepository = movieRepository;
     }
 
-    public void start() {
-        loadTasks(true);
-    }
-
     public boolean isLoading(){
         return isLoading;
     }
@@ -44,7 +33,7 @@ public class MoviesViewModel extends ViewModel {
     public void loadTasks(final boolean showLoadingUI) {
         isLoading = true;
         if (showLoadingUI) {
-            dataLoading.set(true);
+            dataLoading.setValue(true);
         }
         mMovieRepository.getMovies(currentPage, new MovieDataSource.LoadMoviesCallback() {
             @Override
@@ -53,13 +42,12 @@ public class MoviesViewModel extends ViewModel {
                     currentPage = movies.getPage() + 1;
                     if (movies.getResults()!=null){
                         ArrayList<Result> moviesToShow = movies.getResults();
-                        item.clear();
-                        item.addAll(moviesToShow);
+                        item.setValue(moviesToShow);
                     }
                 }
                 isLoading = false;
                 if (showLoadingUI) {
-                    dataLoading.set(false);
+                    dataLoading.setValue(false);
                 }
                 mIsDataLoadingError.set(false);
             }
