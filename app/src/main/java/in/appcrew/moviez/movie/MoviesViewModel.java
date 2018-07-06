@@ -15,7 +15,7 @@ import data.source.MovieRepository;
 
 public class MoviesViewModel extends ViewModel {
     // These observable fields will update Views automatically
-    public final MutableLiveData<ArrayList<Result>> item = new MutableLiveData<>();
+    public final MutableLiveData<ArrayList<Result>> movieList = new MutableLiveData<>();
     public final MutableLiveData<Boolean> dataLoading = new MutableLiveData<>();
     private MovieRepository mMovieRepository;
     private final ObservableBoolean mIsDataLoadingError = new ObservableBoolean(false);
@@ -31,18 +31,21 @@ public class MoviesViewModel extends ViewModel {
     }
 
     public void loadTasks(final boolean showLoadingUI) {
-        isLoading = true;
         if (showLoadingUI) {
+            if (movieList.getValue() != null && movieList.getValue().size() > 0){
+                return;
+            }
             dataLoading.setValue(true);
         }
+        isLoading = true;
         mMovieRepository.getMovies(currentPage, new MovieDataSource.LoadMoviesCallback() {
             @Override
             public void onMoviesLoaded(Movies movies) {
                 if (movies != null && movies.getPage() != null) {
                     currentPage = movies.getPage() + 1;
                     if (movies.getResults()!=null){
-                        ArrayList<Result> moviesToShow = movies.getResults();
-                        item.setValue(moviesToShow);
+                        movieListTemp.addAll(movies.getResults());
+                        movieList.setValue(movieListTemp);
                     }
                 }
                 isLoading = false;

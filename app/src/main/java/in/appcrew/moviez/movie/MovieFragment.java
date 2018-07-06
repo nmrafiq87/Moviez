@@ -44,7 +44,7 @@ public class MovieFragment extends Fragment  {
     @Override
     public void onStart() {
         super.onStart();
-        moviesViewModel.loadTasks(false);
+        moviesViewModel.loadTasks(true);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class MovieFragment extends Fragment  {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
+        moviesViewModel = ViewModelProviders.of(getActivity()).get(MoviesViewModel.class);
         moviesViewModel.setMovieRepository(new MovieRepository(new MovieLocalRepository(), new MovieRemoteRepository()));
         mMovieFragBinding.setViewmodel(moviesViewModel);
         mMovieFragBinding.setView(this);
@@ -81,7 +81,7 @@ public class MovieFragment extends Fragment  {
             }
         };
 
-        moviesViewModel.item.observe(this,movieListObserver);
+        moviesViewModel.movieList.observe(this,movieListObserver);
         moviesViewModel.dataLoading.observe(this,movieProgressObserver);
     }
 
