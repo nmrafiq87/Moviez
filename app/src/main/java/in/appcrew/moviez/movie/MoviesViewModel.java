@@ -16,6 +16,7 @@ import data.source.MovieRepository;
 public class MoviesViewModel extends ViewModel {
     // These observable fields will update Views automatically
     public final MutableLiveData<ArrayList<Result>> movieList = new MutableLiveData<>();
+    private ArrayList<Result> movieListTemp = new ArrayList<>();
     public final MutableLiveData<Boolean> dataLoading = new MutableLiveData<>();
     private MovieRepository mMovieRepository;
     private final ObservableBoolean mIsDataLoadingError = new ObservableBoolean(false);
