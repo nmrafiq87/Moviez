@@ -43,9 +43,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.BindingHolde
     public void onBindViewHolder(BindingHolder holder, int position) {
         Log.d("Position", " "+ position);
         MovieRowBinding binding = holder.binding;
-        final MovieItemViewModel viewModel = new MovieItemViewModel(mContext,
-                new MovieRemoteRepository()
-        );
+        final MovieItemViewModel viewModel = new MovieItemViewModel();
         viewModel.setMovieList(mMovieList.get(position));
         viewModel.setNavigator(mMovieItemNavigator);
         binding.setResult(mMovieList.get(position));

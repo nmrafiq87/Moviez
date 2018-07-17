@@ -1,8 +1,12 @@
 package in.appcrew.moviez.movie;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableBoolean;
+import android.util.Log;
+
 import java.util.ArrayList;
 import data.Movies;
 import data.Result;
@@ -14,7 +18,7 @@ import data.source.MovieRepository;
  */
 
 public class MoviesViewModel extends ViewModel {
-    // These observable fields will update Views automatically
+
     public final MutableLiveData<ArrayList<Result>> movieList = new MutableLiveData<>();
     private ArrayList<Result> movieListTemp = new ArrayList<>();
     public final MutableLiveData<Boolean> dataLoading = new MutableLiveData<>();
@@ -22,10 +26,16 @@ public class MoviesViewModel extends ViewModel {
     private final ObservableBoolean mIsDataLoadingError = new ObservableBoolean(false);
     private int currentPage = 1;
     private boolean isLoading = false;
-
     public void setMovieRepository(MovieRepository movieRepository){
         this.mMovieRepository = movieRepository;
     }
+
+
+
+//    LiveData<User> userLiveData = ...;
+//    LiveData<String> userName = Transformations.map(userLiveData, user -> {
+//        user.name + " " + user.lastName
+//    });
 
     public boolean isLoading(){
         return isLoading;
@@ -47,6 +57,8 @@ public class MoviesViewModel extends ViewModel {
                     if (movies.getResults()!=null){
                         movieListTemp.addAll(movies.getResults());
                         movieList.setValue(movieListTemp);
+                        LiveData<String> userName = Transformations.map(movieList, results -> results.get(0).getTitle());
+                        Log.d("Name of the first " , "" + userName.getValue());
                     }
                 }
                 isLoading = false;

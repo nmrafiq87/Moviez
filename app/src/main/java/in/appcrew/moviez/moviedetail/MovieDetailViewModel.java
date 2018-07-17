@@ -1,5 +1,8 @@
 package in.appcrew.moviez.moviedetail;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,9 +15,11 @@ import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 
 import java.lang.ref.WeakReference;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import data.Genre;
@@ -32,8 +37,8 @@ import in.appcrew.moviez.movie.MovieItemNavigator;
  * Created by nmrafiq on 30/11/17.
  */
 
-public class MovieDetailViewModel extends BaseObservable {
-    public ObservableField<MovieData> mMovie = new ObservableField<>();
+public class MovieDetailViewModel extends ViewModel {
+    public MutableLiveData<MovieData> mMovie = new MutableLiveData<>();
     public ObservableField<String> mTitle = new ObservableField<>();
     public ObservableField<String> mVoteAverage = new ObservableField<>();
     public ObservableField<String> mBackdropImage = new ObservableField<>();
@@ -50,19 +55,6 @@ public class MovieDetailViewModel extends BaseObservable {
         this.mContext = context;
         this.mTitleList = getTitleList();
         mLove.set(0);
-        mMovie.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable observable, int i) {
-                MovieData movie = mMovie.get();
-
-                if (movie != null) {
-                    mTitle.set(movie.getTitle());
-                    mMovieId.set(movie.getId());
-                    mBackdropImage.set(movie.getBackdropPath());
-                    mDescList.addAll(getDescList(movie));
-                }
-            }
-        });
     }
 
     public void start(String movieId){
@@ -74,7 +66,8 @@ public class MovieDetailViewModel extends BaseObservable {
         mMovieRepository.getMovie(mContext, movieId, new MovieDataSource.GetMovieCallback() {
             @Override
             public void onMovieLoaded(MovieData movie) {
-                mMovie.set(movie);
+                mMovie.setValue(movie);
+                setMovieDetails();
             }
 
             @Override
@@ -82,6 +75,13 @@ public class MovieDetailViewModel extends BaseObservable {
 
             }
         });
+    }
+
+    private void setMovieDetails(){
+        mTitle.set(mMovie.getValue().getTitle());
+        mMovieId.set(mMovie.getValue().getId());
+        mBackdropImage.set(mMovie.getValue().getBackdropPath());
+        mDescList.addAll(getDescList(mMovie.getValue()));
     }
 
 //     On clicking the love button verify whether the data exists or not, on basis of which
@@ -95,10 +95,10 @@ public class MovieDetailViewModel extends BaseObservable {
 
 
     public void saveMovie(){
-        mMovieRepository.insertMovie(mContext, mMovie.get(), new MovieDataSource.UpdateMovieCallback() {
+        mMovieRepository.insertMovie(mContext, mMovie.getValue(), new MovieDataSource.UpdateMovieCallback() {
             @Override
             public void onMovieUpdated(MovieData movie) {
-                mMovie.get().setLove(movie.getLove());
+                mMovie.getValue().setLove(movie.getLove());
                 mLove.set(movie.getLove());
             }
         });
