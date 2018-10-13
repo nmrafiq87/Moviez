@@ -1,15 +1,11 @@
 package in.appcrew.moviez.movie;
 
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
-import android.databinding.BaseObservable;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 
 import java.lang.ref.WeakReference;
 
 import data.Result;
-import data.source.MovieRemoteRepository;
 
 /**
  * Created by nmrafiq on 16/11/17.

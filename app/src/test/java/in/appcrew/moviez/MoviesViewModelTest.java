@@ -16,8 +16,6 @@ import java.util.ArrayList;
 
 import data.Movies;
 import data.Result;
-import data.source.MovieDataSource;
-import data.source.MovieRemoteRepository;
 import in.appcrew.moviez.movie.MoviesViewModel;
 
 import static org.mockito.Matchers.any;

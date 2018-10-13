@@ -1,8 +1,6 @@
 package in.appcrew.moviez;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Movie;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,13 +14,7 @@ import java.util.ArrayList;
 
 import data.Genre;
 import data.MovieData;
-import data.Movies;
-import data.Result;
 import data.SpokenLanguage;
-import data.source.MovieDataSource;
-import data.source.MovieLocalRepository;
-import data.source.MovieRemoteRepository;
-import in.appcrew.moviez.movie.MoviesViewModel;
 import in.appcrew.moviez.moviedetail.MovieDetailViewModel;
 
 import static org.mockito.Matchers.any;

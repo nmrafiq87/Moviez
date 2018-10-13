@@ -15,9 +15,8 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import data.Movies;
 import data.Result;
-import data.source.MovieLocalRepository;
-import data.source.MovieRemoteRepository;
 import data.source.MovieRepository;
 import in.appcrew.moviez.databinding.FragmentMovieBinding;
 
@@ -60,16 +59,16 @@ public class MovieFragment extends Fragment  {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         moviesViewModel = ViewModelProviders.of(getActivity()).get(MoviesViewModel.class);
-        moviesViewModel.setMovieRepository(new MovieRepository(new MovieLocalRepository(), new MovieRemoteRepository()));
+        moviesViewModel.setMovieRepository(new MovieRepository(getActivity()));
         mMovieFragBinding.setViewmodel(moviesViewModel);
         mMovieFragBinding.setView(this);
         setupListAdapter();
 
-        final Observer<ArrayList<Result>> movieListObserver = new Observer<ArrayList<Result>>() {
+        final Observer<Movies> movieListObserver = new Observer<Movies>() {
             @Override
-            public void onChanged(@Nullable ArrayList<Result> results) {
-                if (movieAdapter != null){
-                    movieAdapter.replaceData(results);
+            public void onChanged(@Nullable Movies results) {
+                if (movieAdapter != null && results != null){
+                    movieAdapter.replaceData(results.getResults());
                 }
             }
         };
@@ -81,7 +80,7 @@ public class MovieFragment extends Fragment  {
             }
         };
 
-        moviesViewModel.movieList.observe(this,movieListObserver);
+        moviesViewModel.getMovies().observe(this,movieListObserver);
         moviesViewModel.dataLoading.observe(this,movieProgressObserver);
     }
 

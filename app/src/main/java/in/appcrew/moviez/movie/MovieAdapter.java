@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import data.Result;
-import data.source.MovieRemoteRepository;
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.databinding.MovieRowBinding;
 

@@ -1,37 +1,18 @@
 package in.appcrew.moviez.moviedetail;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.databinding.BaseObservable;
-import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
-import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
-import android.net.Uri;
-import android.util.Log;
-import android.view.View;
 
-import java.lang.ref.WeakReference;
-import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import data.Genre;
 import data.MovieData;
 import data.SpokenLanguage;
-import data.source.MovieContentProvider;
-import data.source.MovieDataSource;
-import data.source.MovieLocalRepository;
-import data.source.MoviePersistentContract;
-import data.source.MovieRemoteRepository;
 import data.source.MovieRepository;
-import in.appcrew.moviez.movie.MovieItemNavigator;
 
 /**
  * Created by nmrafiq on 30/11/17.
@@ -63,18 +44,18 @@ public class MovieDetailViewModel extends ViewModel {
 
     // Load movie from remote repository
     public void loadMovies(final String movieId){
-        mMovieRepository.getMovie(mContext, movieId, new MovieDataSource.GetMovieCallback() {
-            @Override
-            public void onMovieLoaded(MovieData movie) {
-                mMovie.setValue(movie);
-                setMovieDetails();
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-
-            }
-        });
+//        mMovieRepository.getMovie(mContext, movieId, new MovieDataSource.GetMovieCallback() {
+//            @Override
+//            public void onMovieLoaded(MovieData movie) {
+//                mMovie.setValue(movie);
+//                setMovieDetails();
+//            }
+//
+//            @Override
+//            public void onDataNotAvailable() {
+//
+//            }
+//        });
     }
 
     private void setMovieDetails(){
@@ -95,13 +76,13 @@ public class MovieDetailViewModel extends ViewModel {
 
 
     public void saveMovie(){
-        mMovieRepository.insertMovie(mContext, mMovie.getValue(), new MovieDataSource.UpdateMovieCallback() {
-            @Override
-            public void onMovieUpdated(MovieData movie) {
-                mMovie.getValue().setLove(movie.getLove());
-                mLove.set(movie.getLove());
-            }
-        });
+//        mMovieRepository.insertMovie(mContext, mMovie.getValue(), new MovieDataSource.UpdateMovieCallback() {
+//            @Override
+//            public void onMovieUpdated(MovieData movie) {
+//                mMovie.getValue().setLove(movie.getLove());
+//                mLove.set(movie.getLove());
+//            }
+//        });
     }
 
     public ObservableArrayList<String> getTitleList(){

@@ -1,17 +1,12 @@
 package in.appcrew.moviez.movie;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import data.source.MovieLocalRepository;
-import data.source.MovieRemoteRepository;
-import data.source.MovieRepository;
 import in.appcrew.moviez.R;
-import in.appcrew.moviez.ViewModelHolder;
 import in.appcrew.moviez.moviedetail.MovieDetailActivity;
 import in.appcrew.moviez.utils.ActivityUtils;
 
