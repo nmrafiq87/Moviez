@@ -50,6 +50,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.BindingHolde
     }
 
     public void replaceData(ArrayList<Result> movies){
+        this.mMovieList.clear();
         this.mMovieList.addAll(movies);
         notifyDataSetChanged();
     }

@@ -8,8 +8,10 @@ import android.databinding.ObservableBoolean;
 import android.graphics.Movie;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import data.Movies;
+import data.MoviesUiState;
 import data.Result;
 import data.source.MovieRepository;
 
@@ -19,11 +21,11 @@ import data.source.MovieRepository;
 
 public class MoviesViewModel extends ViewModel {
 
-    public final MutableLiveData<Movies> movieList = new MutableLiveData<>();
-    private ArrayList<Movies> movieListTemp = new ArrayList<>();
+    public MutableLiveData<ArrayList<Result>> movieList = new MutableLiveData<>();
+    public MutableLiveData<MoviesUiState> movieStateLiveData = new MutableLiveData<>();
+    private ArrayList<Result> movieListTemp = new ArrayList<>();
     public final MutableLiveData<Boolean> dataLoading = new MutableLiveData<>();
     private MovieRepository mMovieRepository;
-    private final ObservableBoolean mIsDataLoadingError = new ObservableBoolean(false);
     private int currentPage = 1;
     private boolean isLoading = false;
     public void setMovieRepository(MovieRepository movieRepository){
@@ -35,38 +37,52 @@ public class MoviesViewModel extends ViewModel {
     }
 
     public void loadTasks(final boolean showLoadingUI) {
-        if (showLoadingUI) {
-            if (movieList.getValue() != null && movieList.getValue().getResults().size() > 0){
-                return;
-            }
-            dataLoading.setValue(true);
-        }
-        isLoading = true;
         mMovieRepository.getMoviesRemote(currentPage);
-        LiveData<Movies> movieResult = mMovieRepository.getMovies();
-//        movieList.setValue(movieResult.getValue());
-
-//        if (movies.getValue() != null) {
-//            if (movies.getValue().getPage() != null) {
-//                currentPage = movies.getValue().getPage() + 1;
-//                if (movies.getValue().getResults()!=null){
-//                    movieListTemp.addAll(movies.getValue().getResults());
-//                    movieList.setValue(movieListTemp);
-//                }
-//            }
-//            isLoading = false;
-//            if (showLoadingUI) {
-//                dataLoading.setValue(false);
-//            }
-//            mIsDataLoadingError.set(false);
-//        } else {
-//            isLoading = false;
-//            mIsDataLoadingError.set(true);
-//        }
+        MoviesUiState moviesUiState = new MoviesUiState();
+        if (showLoadingUI){
+            moviesUiState.setShowProgress(true);
+        }
+        moviesUiState.setLoading(true);
+        movieStateLiveData.setValue(moviesUiState);
     }
 
-    public LiveData<Movies> getMovies(){
-        return mMovieRepository.getMovies();
+    public MutableLiveData<MoviesUiState> setMoviesUI(Movies movie){
+        MoviesUiState uiState = new MoviesUiState();
+        boolean isError;
+        if (movie != null && movie.getPage() != null) {
+            currentPage = movie.getPage() + 1;
+            isError = false;
+        } else {
+            isError = true;
+        }
+        uiState.setCurrentPage(currentPage);
+        uiState.setShowProgress(false);
+        uiState.setLoading(false);
+        uiState.setLoadingError(isError);
+        movieStateLiveData.setValue(uiState);
+        return movieStateLiveData;
     }
 
+    public LiveData<ArrayList<Result>> getMovies(){
+        return Transformations.switchMap(mMovieRepository.getMovies(), movies-> setUpData(movies));
+    }
+
+    private LiveData<ArrayList<Result>> setUpData(Movies movies){
+        MoviesUiState uiState = new MoviesUiState();
+        boolean isError;
+        if (movies != null) {
+            currentPage = movies.getPage() + 1;
+            isError = false;
+        } else {
+            isError = true;
+        }
+        uiState.setCurrentPage(currentPage);
+        uiState.setShowProgress(false);
+        uiState.setLoading(false);
+        uiState.setLoadingError(isError);
+        movieStateLiveData.setValue(uiState);
+        movieListTemp.addAll(movies.getResults());
+        movieList.setValue(movieListTemp);
+        return movieList;
+    }
 }

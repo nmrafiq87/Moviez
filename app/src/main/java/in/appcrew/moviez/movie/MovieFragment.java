@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import data.Movies;
+import data.MoviesUiState;
 import data.Result;
 import data.source.MovieRepository;
 import in.appcrew.moviez.databinding.FragmentMovieBinding;
@@ -28,6 +29,8 @@ public class MovieFragment extends Fragment  {
     private FragmentMovieBinding mMovieFragBinding;
     private MovieAdapter movieAdapter;
     private RecyclerView recyclerView;
+    private MoviesUiState moviesUiState;
+    private boolean isLoading;
 
     public static MovieFragment newInstance() {
         MovieFragment fragment = new MovieFragment();
@@ -64,11 +67,21 @@ public class MovieFragment extends Fragment  {
         mMovieFragBinding.setView(this);
         setupListAdapter();
 
-        final Observer<Movies> movieListObserver = new Observer<Movies>() {
+        final Observer<ArrayList<Result>> movieListObserver = new Observer<ArrayList<Result>>() {
             @Override
-            public void onChanged(@Nullable Movies results) {
+            public void onChanged(@Nullable ArrayList<Result> results) {
                 if (movieAdapter != null && results != null){
-                    movieAdapter.replaceData(results.getResults());
+                    movieAdapter.replaceData(results);
+                }
+            }
+        };
+
+        final Observer<MoviesUiState> moviesUiStateObserver = new Observer<MoviesUiState>() {
+            @Override
+            public void onChanged(@Nullable MoviesUiState uiState) {
+                if (uiState != null){
+                    isLoading = uiState.getLoading();
+                    mMovieFragBinding.progressBar.setVisibility(uiState.isShowProgress() ? View.VISIBLE : View.GONE);
                 }
             }
         };
@@ -81,7 +94,8 @@ public class MovieFragment extends Fragment  {
         };
 
         moviesViewModel.getMovies().observe(this,movieListObserver);
-        moviesViewModel.dataLoading.observe(this,movieProgressObserver);
+        moviesViewModel.movieStateLiveData.observe(this,moviesUiStateObserver);
+//        moviesViewModel.dataLoading.observe(this,movieProgressObserver);
     }
 
     private void setupListAdapter() {
@@ -99,7 +113,7 @@ public class MovieFragment extends Fragment  {
                 totalItemCount = linearLayoutManager.getItemCount();
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 Log.d("Total Last Visible Item", totalItemCount + " " + lastVisibleItem);
-                if (!moviesViewModel.isLoading() && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                     moviesViewModel.loadTasks(false);
                 }
             }
