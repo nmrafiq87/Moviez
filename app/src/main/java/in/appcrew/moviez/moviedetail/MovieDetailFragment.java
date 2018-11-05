@@ -1,8 +1,11 @@
 package in.appcrew.moviez.moviedetail;
 
 
+import android.arch.lifecycle.Observer;
 import android.content.ContentUris;
 import android.database.Cursor;
+import android.database.Observable;
+import android.databinding.ObservableField;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import data.MovieData;
 import data.source.MovieContentProvider;
 import data.source.MoviePersistentContract;
 import in.appcrew.moviez.databinding.FragmentMovieDetailBinding;
@@ -33,6 +37,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private MovieDetailViewModel mMovieDetailViewModel;
+    public ObservableField<MovieData> movieDetail = new ObservableField<>();
     private String movieId;
     private FragmentMovieDetailBinding fragmentMovieDetailBinding;
     // TODO: Rename and change types of parameters
@@ -67,7 +72,19 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     public void onStart() {
         super.onStart();
         mMovieDetailViewModel.start(movieId);
-
+        mMovieDetailViewModel.mMovieDataLiveData.observe(getActivity(), new Observer<MovieData>() {
+            @Override
+            public void onChanged(@Nullable MovieData movieData) {
+                if (movieData != null){
+                    if (movieDetail.get() != null && (movieData.getLove() == movieDetail.get().getLove())){
+                        Log.d("Same Data ", "Same Data");
+                    }
+                    movieDetail.set(movieData);
+                    movieDetail.notifyChange();
+                }
+                Log.d("Movie Data ", "" + movieDetail.get().getTitle() + " " + movieDetail.get().getLove());
+            }
+        });
     }
 
     @Override
@@ -83,7 +100,7 @@ public class MovieDetailFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setUpAdapter();
+//        setUpAdapter();
         getActivity().getSupportLoaderManager().initLoader(0, null, this);
 
     }

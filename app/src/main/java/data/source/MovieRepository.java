@@ -6,6 +6,7 @@ import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Movie;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -13,6 +14,7 @@ import ApiInterface.MovieInterface;
 import data.MovieData;
 import data.Movies;
 import data.Result;
+import in.appcrew.moviez.MovieApplication;
 import in.appcrew.moviez.movie.MovieActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,33 +25,32 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static in.appcrew.moviez.movie.MovieActivity.API_KEY;
 
 public class MovieRepository{
-    private Retrofit RETROFIT_INSTANCE = null;
     private Context context;
-    private MutableLiveData<Movies> moviesMutableLiveData = new MutableLiveData<>();
-
+    private MutableLiveData<Movies> moviesLivedata = new MutableLiveData<>();
+    private MutableLiveData<MovieData> moviesDetailLivedata = new MutableLiveData<>();
+    private MutableLiveData<MovieData> localMovieLivedata = new MutableLiveData<>();
     public MovieRepository(Context context){
         this.context = context;
     }
 
     public void getMoviesRemote(int page) {
-        RETROFIT_INSTANCE = getRetroFit();
-        MovieInterface movieService = RETROFIT_INSTANCE.create(MovieInterface.class);
+        MovieInterface movieService = MovieApplication.getRetroFit().create(MovieInterface.class);
         Call<Movies> call = movieService.getMovies(API_KEY,page);
         call.enqueue(new Callback<Movies>() {
             @Override
             public void onResponse(Call<Movies> call, Response<Movies> response) {
-                moviesMutableLiveData.setValue(response.body());
+                moviesLivedata.setValue(response.body());
             }
 
             @Override
             public void onFailure(Call<Movies> call, Throwable t) {
-                moviesMutableLiveData.setValue(null);
+                moviesLivedata.setValue(null);
             }
         });
     }
 
     public LiveData<Movies> getMovies(){
-        return moviesMutableLiveData;
+        return moviesLivedata;
     }
 
     public void getMovie(String movieId){
@@ -64,32 +65,28 @@ public class MovieRepository{
                 if (cursor != null && cursor.moveToNext()){
                     movieData.setId(cursor.getString(cursor.getColumnIndex(MoviePersistentContract.MovieEntry.MOVIE_ID)));
                     movieData.setLove(cursor.getInt(cursor.getColumnIndex(MoviePersistentContract.MovieEntry.MOVIE_FAVOURITE)));
-//                    callback.onMovieLoaded(movieData);
-                }else{
-//                    callback.onDataNotAvailable();
+                    localMovieLivedata.setValue(movieData);
                 }
             }
         };
         asyncQueryHandler.startQuery(0,null,MovieContentProvider.CONTENT_URI,null,selectionClause,selectionArgs,null);
     }
 
-    public LiveData<MovieData> getMovieRemote(String movieId) {
-        RETROFIT_INSTANCE = getRetroFit();
-        MovieInterface movieService = RETROFIT_INSTANCE.create(MovieInterface.class);
+    public void getMovieDetailRemote(String movieId) {
+        MovieInterface movieService = MovieApplication.getRetroFit().create(MovieInterface.class);
         MutableLiveData<MovieData> movieLiveData = new MutableLiveData<>();
         Call<MovieData> call = movieService.getMovie(movieId,API_KEY);
         call.enqueue(new Callback<MovieData>() {
             @Override
             public void onResponse(Call<MovieData> call, Response<MovieData> response) {
-                movieLiveData.setValue(response.body());
+                moviesDetailLivedata.setValue(response.body());
             }
 
             @Override
             public void onFailure(Call<MovieData> call, Throwable t) {
-                movieLiveData.setValue(null);
+                moviesDetailLivedata.setValue(null);
             }
         });
-        return movieLiveData;
     }
 
     public void insertMovie(MovieData movie) {
@@ -104,7 +101,7 @@ public class MovieRepository{
                 super.onInsertComplete(token, cookie, uri);
                 if (uri != null){
                     movie.setLove(movie.getLove() == 0 ? 1 : 0);
-//                    updateMovieCallback.onMovieUpdated(movie);
+                    localMovieLivedata.setValue(movie);
                 }
             }
         };
@@ -124,20 +121,20 @@ public class MovieRepository{
                 super.onUpdateComplete(token, cookie, result);
                 if (result > 0){
                     movie.setLove(movie.getLove() == 0 ? 1 : 0);
-//                    updateMovieCallback.onMovieUpdated(movie);
+                    localMovieLivedata.setValue(movie);
                 }
             }
         };
         asyncQueryHandler.startUpdate(0,null,MovieContentProvider.CONTENT_URI,cv,selectionClause,selectionArgs);
     }
 
-    public Retrofit getRetroFit(){
-        if (RETROFIT_INSTANCE == null){
-            RETROFIT_INSTANCE = new Retrofit.Builder()
-                    .baseUrl(MovieActivity.BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-        return RETROFIT_INSTANCE;
+    public LiveData<MovieData> getMovieLocalLiveData(){
+        return localMovieLivedata;
     }
+
+    public LiveData<MovieData> getMovieRemoteLiveData(){
+        return moviesDetailLivedata;
+    }
+
+
 }

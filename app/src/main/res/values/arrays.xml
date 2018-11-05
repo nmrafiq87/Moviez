@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="movie_detail_title">
+        <item>@string/description</item>
+        <item>@string/rating</item>
+        <item>@string/rating_count</item>
+        <item>@string/genre</item>
+        <item>@string/spoken_language</item>
+    </string-array>
+</resources>

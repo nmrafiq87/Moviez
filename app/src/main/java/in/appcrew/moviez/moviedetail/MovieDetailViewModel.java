@@ -1,11 +1,18 @@
 package in.appcrew.moviez.moviedetail;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
+import android.graphics.Movie;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.List;
 
@@ -20,8 +27,8 @@ import data.source.MovieRepository;
 
 public class MovieDetailViewModel extends ViewModel {
     public MutableLiveData<MovieData> mMovie = new MutableLiveData<>();
+    public MediatorLiveData<MovieData> mMovieDataLiveData = new MediatorLiveData<MovieData>();
     public ObservableField<String> mTitle = new ObservableField<>();
-    public ObservableField<String> mVoteAverage = new ObservableField<>();
     public ObservableField<String> mBackdropImage = new ObservableField<>();
     public ObservableArrayList<String> mTitleList = new ObservableArrayList<>();
     public ObservableArrayList<String> mDescList = new ObservableArrayList<>();
@@ -44,45 +51,48 @@ public class MovieDetailViewModel extends ViewModel {
 
     // Load movie from remote repository
     public void loadMovies(final String movieId){
-//        mMovieRepository.getMovie(mContext, movieId, new MovieDataSource.GetMovieCallback() {
-//            @Override
-//            public void onMovieLoaded(MovieData movie) {
-//                mMovie.setValue(movie);
-//                setMovieDetails();
-//            }
-//
-//            @Override
-//            public void onDataNotAvailable() {
-//
-//            }
-//        });
+        mMovieRepository.getMovieDetailRemote(movieId);
+        mMovieRepository.getMovie(movieId);
+        mMovieDataLiveData.addSource(mMovieRepository.getMovieLocalLiveData(), new Observer<MovieData>() {
+            @Override
+            public void onChanged(@Nullable MovieData movieData) {
+                int love = movieData.getLove();
+                Log.d("Love Local ", "Love Local" + love);
+                MovieData movie = mMovieDataLiveData.getValue() != null ? mMovieDataLiveData.getValue() : movieData;
+                mMovieDataLiveData.setValue(movie);
+            }
+        });
+
+        mMovieDataLiveData.addSource(mMovieRepository.getMovieRemoteLiveData(), new Observer<MovieData>() {
+            @Override
+            public void onChanged(@Nullable MovieData movieData) {
+                int love = mMovieDataLiveData.getValue() != null ? mMovieDataLiveData.getValue().getLove() : 0;
+                Log.d("Love Remote ", "Love Remote" + love);
+                movieData.setLove(love);
+                mMovieDataLiveData.setValue(movieData);
+            }
+        });
     }
 
-    private void setMovieDetails(){
+    private void setMovieDetails() {
         mTitle.set(mMovie.getValue().getTitle());
         mMovieId.set(mMovie.getValue().getId());
         mBackdropImage.set(mMovie.getValue().getBackdropPath());
         mDescList.addAll(getDescList(mMovie.getValue()));
     }
 
-//     On clicking the love button verify whether the data exists or not, on basis of which
-//        either an insert or update is made
     public void loveClicked(){
-        if (mMovieId.get() == null){
-            return;
-        }
        saveMovie();
     }
 
-
     public void saveMovie(){
-//        mMovieRepository.insertMovie(mContext, mMovie.getValue(), new MovieDataSource.UpdateMovieCallback() {
-//            @Override
-//            public void onMovieUpdated(MovieData movie) {
-//                mMovie.getValue().setLove(movie.getLove());
-//                mLove.set(movie.getLove());
-//            }
-//        });
+        if (mMovieDataLiveData.getValue() != null && !TextUtils.isEmpty(mMovieDataLiveData.getValue().getId())){
+            Log.d("Before Love Update", "Love Update" + mMovieDataLiveData.getValue().getLove());
+            mMovieRepository.updateMovie(mMovieDataLiveData.getValue());
+        } else {
+            Log.d("Before Love Insert", "Love Insert" + mMovieDataLiveData.getValue().getLove());
+            mMovieRepository.insertMovie(mMovieDataLiveData.getValue());
+        }
     }
 
     public ObservableArrayList<String> getTitleList(){
@@ -125,5 +135,6 @@ public class MovieDetailViewModel extends ViewModel {
         sb.deleteCharAt(sb.lastIndexOf(","));
         return sb.toString();
     }
+
 
 }

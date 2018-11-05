@@ -12,10 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
-
-import data.Movies;
 import data.MoviesUiState;
 import data.Result;
 import data.source.MovieRepository;
@@ -24,17 +21,14 @@ import in.appcrew.moviez.databinding.FragmentMovieBinding;
 
 public class MovieFragment extends Fragment  {
     private MoviesViewModel moviesViewModel;
-    private int visibleThreshold = 8;
-    private int lastVisibleItem, totalItemCount;
+    private static final int visibleThreshold = 8;
     private FragmentMovieBinding mMovieFragBinding;
     private MovieAdapter movieAdapter;
     private RecyclerView recyclerView;
-    private MoviesUiState moviesUiState;
     private boolean isLoading;
 
     public static MovieFragment newInstance() {
-        MovieFragment fragment = new MovieFragment();
-        return fragment;
+        return new MovieFragment();
     }
 
     @Override
@@ -54,8 +48,7 @@ public class MovieFragment extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mMovieFragBinding = FragmentMovieBinding.inflate(inflater, container, false);
-        View root = mMovieFragBinding.getRoot();
-        return root;
+        return mMovieFragBinding.getRoot();
     }
 
     @Override
@@ -67,42 +60,29 @@ public class MovieFragment extends Fragment  {
         mMovieFragBinding.setView(this);
         setupListAdapter();
 
-        final Observer<ArrayList<Result>> movieListObserver = new Observer<ArrayList<Result>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<Result> results) {
-                if (movieAdapter != null && results != null){
-                    movieAdapter.replaceData(results);
-                }
+        final Observer<ArrayList<Result>> movieListObserver =  results -> {
+            if (movieAdapter != null && results != null){
+                movieAdapter.replaceData(results);
             }
         };
 
-        final Observer<MoviesUiState> moviesUiStateObserver = new Observer<MoviesUiState>() {
-            @Override
-            public void onChanged(@Nullable MoviesUiState uiState) {
-                if (uiState != null){
-                    isLoading = uiState.getLoading();
-                    mMovieFragBinding.progressBar.setVisibility(uiState.isShowProgress() ? View.VISIBLE : View.GONE);
-                }
+        final Observer<MoviesUiState> moviesUiStateObserver = uiState -> {
+            if (uiState != null){
+                isLoading = uiState.getLoading();
+                mMovieFragBinding.progressBar.setVisibility(uiState.isShowProgress() ? View.VISIBLE : View.GONE);
             }
         };
 
-        final Observer<Boolean> movieProgressObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean movieProgress) {
-                mMovieFragBinding.progressBar.setVisibility(movieProgress ? View.VISIBLE : View.GONE);
-            }
-        };
 
         moviesViewModel.getMovies().observe(this,movieListObserver);
         moviesViewModel.movieStateLiveData.observe(this,moviesUiStateObserver);
-//        moviesViewModel.dataLoading.observe(this,movieProgressObserver);
     }
 
     private void setupListAdapter() {
         recyclerView =  mMovieFragBinding.movieRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        movieAdapter = new MovieAdapter(new ArrayList<Result>(),getContext(),(MovieActivity)getActivity());
+        movieAdapter = new MovieAdapter(new ArrayList<>(),getContext(),(MovieActivity)getActivity());
         movieAdapter.setHasStableIds(true);
         recyclerView.setAdapter(movieAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -110,8 +90,8 @@ public class MovieFragment extends Fragment  {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                totalItemCount = linearLayoutManager.getItemCount();
-                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 Log.d("Total Last Visible Item", totalItemCount + " " + lastVisibleItem);
                 if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                     moviesViewModel.loadTasks(false);
@@ -137,15 +117,5 @@ public class MovieFragment extends Fragment  {
         super.onDetach();
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
 
 }
