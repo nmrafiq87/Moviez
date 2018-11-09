@@ -29,6 +29,7 @@ public class MovieRepository{
     private MutableLiveData<Movies> moviesLivedata = new MutableLiveData<>();
     private MutableLiveData<MovieData> moviesDetailLivedata = new MutableLiveData<>();
     private MutableLiveData<MovieData> localMovieLivedata = new MutableLiveData<>();
+
     public MovieRepository(Context context){
         this.context = context;
     }
@@ -91,7 +92,7 @@ public class MovieRepository{
 
     public void insertMovie(MovieData movie) {
         ContentValues cv = new ContentValues();
-        cv.put(MoviePersistentContract.MovieEntry.MOVIE_FAVOURITE,movie.getLove() == 0 ? 1 :0);
+        cv.put(MoviePersistentContract.MovieEntry.MOVIE_FAVOURITE, movie.getLove() == 0 ? 1 : 0);
         cv.put(MoviePersistentContract.MovieEntry.MOVIE_ID,movie.getId());
         cv.put(MoviePersistentContract.MovieEntry.MOVIE_NAME,movie.getOriginalTitle());
 
@@ -105,7 +106,6 @@ public class MovieRepository{
                 }
             }
         };
-
         asyncQueryHandler.startInsert(0,null,MovieContentProvider.CONTENT_URI,cv);
     }
 
@@ -114,14 +114,16 @@ public class MovieRepository{
         String selectionClause =  MoviePersistentContract.MovieEntry.MOVIE_ID + " = ?";
         selectionArgs[0] = movie.getId();
         ContentValues cv = new ContentValues();
-        cv.put(MoviePersistentContract.MovieEntry.MOVIE_FAVOURITE,movie.getLove() == 0 ? 1 : 0);
+        cv.put(MoviePersistentContract.MovieEntry.MOVIE_FAVOURITE, movie.getLove() == 0 ? 1 : 0);
         AsyncQueryHandler asyncQueryHandler = new AsyncQueryHandler(context.getContentResolver()) {
             @Override
             protected void onUpdateComplete(int token, Object cookie, int result) {
                 super.onUpdateComplete(token, cookie, result);
                 if (result > 0){
-                    movie.setLove(movie.getLove() == 0 ? 1 : 0);
-                    localMovieLivedata.setValue(movie);
+                    MovieData movieData = new MovieData();
+                    movieData.setId(movie.getId());
+                    movieData.setLove(movie.getLove() == 0 ? 1 : 0);
+                    localMovieLivedata.setValue(movieData);
                 }
             }
         };

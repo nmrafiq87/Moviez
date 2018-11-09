@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.ObservableArrayList;
@@ -14,7 +15,9 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import data.Genre;
 import data.MovieData;
@@ -26,23 +29,15 @@ import data.source.MovieRepository;
  */
 
 public class MovieDetailViewModel extends ViewModel {
-    public MutableLiveData<MovieData> mMovie = new MutableLiveData<>();
-    public MediatorLiveData<MovieData> mMovieDataLiveData = new MediatorLiveData<MovieData>();
-    public ObservableField<String> mTitle = new ObservableField<>();
-    public ObservableField<String> mBackdropImage = new ObservableField<>();
+    public LiveData<MovieData> movieLiveData;
+    public LiveData<MovieData> movieLocalLiveData;
+    public LiveData<ArrayList<String>> mDescList;
     public ObservableArrayList<String> mTitleList = new ObservableArrayList<>();
-    public ObservableArrayList<String> mDescList = new ObservableArrayList<>();
-    public ObservableField<String> mMovieId = new ObservableField<>();
-    public ObservableInt mLove = new ObservableInt();
     private MovieRepository mMovieRepository;
-    private Context mContext;
 
 
-    public MovieDetailViewModel(MovieRepository movieRepository, Context context){
+    public MovieDetailViewModel(MovieRepository movieRepository){
         this.mMovieRepository = movieRepository;
-        this.mContext = context;
-        this.mTitleList = getTitleList();
-        mLove.set(0);
     }
 
     public void start(String movieId){
@@ -53,32 +48,8 @@ public class MovieDetailViewModel extends ViewModel {
     public void loadMovies(final String movieId){
         mMovieRepository.getMovieDetailRemote(movieId);
         mMovieRepository.getMovie(movieId);
-        mMovieDataLiveData.addSource(mMovieRepository.getMovieLocalLiveData(), new Observer<MovieData>() {
-            @Override
-            public void onChanged(@Nullable MovieData movieData) {
-                int love = movieData.getLove();
-                Log.d("Love Local ", "Love Local" + love);
-                MovieData movie = mMovieDataLiveData.getValue() != null ? mMovieDataLiveData.getValue() : movieData;
-                mMovieDataLiveData.setValue(movie);
-            }
-        });
-
-        mMovieDataLiveData.addSource(mMovieRepository.getMovieRemoteLiveData(), new Observer<MovieData>() {
-            @Override
-            public void onChanged(@Nullable MovieData movieData) {
-                int love = mMovieDataLiveData.getValue() != null ? mMovieDataLiveData.getValue().getLove() : 0;
-                Log.d("Love Remote ", "Love Remote" + love);
-                movieData.setLove(love);
-                mMovieDataLiveData.setValue(movieData);
-            }
-        });
-    }
-
-    private void setMovieDetails() {
-        mTitle.set(mMovie.getValue().getTitle());
-        mMovieId.set(mMovie.getValue().getId());
-        mBackdropImage.set(mMovie.getValue().getBackdropPath());
-        mDescList.addAll(getDescList(mMovie.getValue()));
+        movieLocalLiveData = mMovieRepository.getMovieLocalLiveData();
+        movieLiveData = mMovieRepository.getMovieRemoteLiveData();
     }
 
     public void loveClicked(){
@@ -86,32 +57,22 @@ public class MovieDetailViewModel extends ViewModel {
     }
 
     public void saveMovie(){
-        if (mMovieDataLiveData.getValue() != null && !TextUtils.isEmpty(mMovieDataLiveData.getValue().getId())){
-            Log.d("Before Love Update", "Love Update" + mMovieDataLiveData.getValue().getLove());
-            mMovieRepository.updateMovie(mMovieDataLiveData.getValue());
+        if (movieLocalLiveData.getValue() != null && !TextUtils.isEmpty(movieLocalLiveData.getValue().getId())){
+            mMovieRepository.updateMovie(movieLocalLiveData.getValue());
         } else {
-            Log.d("Before Love Insert", "Love Insert" + mMovieDataLiveData.getValue().getLove());
-            mMovieRepository.insertMovie(mMovieDataLiveData.getValue());
+            mMovieRepository.insertMovie(movieLiveData.getValue());
         }
     }
 
-    public ObservableArrayList<String> getTitleList(){
-        ObservableArrayList<String> titleList = new ObservableArrayList<>();
-        titleList.add("Description");
-        titleList.add("Rating");
-        titleList.add("Rating Count");
-        titleList.add("Genre");
-        titleList.add("Spoken Language");
-        return titleList;
-    }
-
-    public ObservableArrayList<String> getDescList(MovieData movieData){
-        ObservableArrayList<String> descList = new ObservableArrayList<>();
-        descList.add(movieData.getOverview());
-        descList.add(String.valueOf(movieData.getVoteAverage()));
-        descList.add(String.valueOf(movieData.getVoteCount()));
-        descList.add(getGenre(movieData.getGenres()));
-        descList.add(getSpokenLanguages(movieData.getSpokenLanguages()));
+    private LiveData<ArrayList<String>> getDescList(MovieData movieData){
+        MutableLiveData<ArrayList<String>> descList = new MutableLiveData<>();
+        ArrayList<String> arrList = new ArrayList<>();
+        arrList.add(movieData.getOverview());
+        arrList.add(String.valueOf(movieData.getVoteAverage()));
+        arrList.add(String.valueOf(movieData.getVoteCount()));
+        arrList.add(getGenre(movieData.getGenres()));
+        arrList.add(getSpokenLanguages(movieData.getSpokenLanguages()));
+        descList.setValue(arrList);
         return descList;
     }
 

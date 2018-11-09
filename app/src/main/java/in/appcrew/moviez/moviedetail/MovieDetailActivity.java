@@ -40,7 +40,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         if (retainedViewModel != null && retainedViewModel.getViewmodel() != null){
             return retainedViewModel.getViewmodel();
         }else{
-            MovieDetailViewModel movieDetailViewModel = new MovieDetailViewModel(new MovieRepository(this), this);
+            MovieDetailViewModel movieDetailViewModel = new MovieDetailViewModel(new MovieRepository(this));
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                     retainedViewModel.createContainer(movieDetailViewModel),
                     TAG);

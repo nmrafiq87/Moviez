@@ -40,8 +40,8 @@ public class MovieListBindings {
     }
 
     @BindingAdapter({"movieLove"})
-    public static void setMovieLove(FloatingActionButton floatingActionButton, int mLove){
-            if (mLove == 1) {
+    public static void setMovieLove(FloatingActionButton floatingActionButton, int love){
+            if (love == 1) {
                 floatingActionButton.setImageResource(R.drawable.ic_favorite_fill);
             } else {
                 floatingActionButton.setImageResource(R.drawable.ic_favorite_border);
