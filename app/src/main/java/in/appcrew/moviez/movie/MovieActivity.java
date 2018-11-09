@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.moviedetail.MovieDetailActivity;
 import in.appcrew.moviez.utils.ActivityUtils;
@@ -24,9 +23,6 @@ public class MovieActivity extends AppCompatActivity implements MovieItemNavigat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moviez_home);
         movieFragment = findOrCreateViewFragment();
-//        MoviesViewModel moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
-//        moviesViewModel.setMovieRepository(new MovieRepository(new MovieLocalRepository(), new MovieRemoteRepository()));
-//        movieFragment.setMoviesViewModel(moviesViewModel);
     }
 
     @NonNull

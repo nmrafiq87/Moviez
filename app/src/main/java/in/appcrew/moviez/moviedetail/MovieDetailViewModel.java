@@ -50,6 +50,7 @@ public class MovieDetailViewModel extends ViewModel {
         mMovieRepository.getMovie(movieId);
         movieLocalLiveData = mMovieRepository.getMovieLocalLiveData();
         movieLiveData = mMovieRepository.getMovieRemoteLiveData();
+        mDescList = Transformations.map(movieLiveData, movieData -> getDescList(movieData));
     }
 
     public void loveClicked(){
@@ -64,16 +65,14 @@ public class MovieDetailViewModel extends ViewModel {
         }
     }
 
-    private LiveData<ArrayList<String>> getDescList(MovieData movieData){
-        MutableLiveData<ArrayList<String>> descList = new MutableLiveData<>();
+    private ArrayList<String> getDescList(MovieData movieData){
         ArrayList<String> arrList = new ArrayList<>();
         arrList.add(movieData.getOverview());
         arrList.add(String.valueOf(movieData.getVoteAverage()));
         arrList.add(String.valueOf(movieData.getVoteCount()));
         arrList.add(getGenre(movieData.getGenres()));
         arrList.add(getSpokenLanguages(movieData.getSpokenLanguages()));
-        descList.setValue(arrList);
-        return descList;
+        return arrList;
     }
 
 

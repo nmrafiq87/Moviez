@@ -18,11 +18,6 @@ import in.appcrew.moviez.databinding.MovieDetailRowBinding;
 public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.DetailBindingHolder> {
     private ArrayList<String> mTitleList = new ArrayList<>();
     private ArrayList<String> mDescList = new ArrayList<>();
-    private Context context;
-
-    public MovieDetailAdapter(Context context){
-        this.context = context;
-    }
 
     @Override
     public DetailBindingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
