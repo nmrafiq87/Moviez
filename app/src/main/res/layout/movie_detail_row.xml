@@ -7,7 +7,7 @@
 
         <variable
             name="detailmodel"
-            type="in.appcrew.moviez.moviedetail.MovieDetailItemViewModel"/>
+            type="in.appcrew.moviez.moviedetail.viewmodel.MovieDetailItemViewModel"/>
 
     </data>
 

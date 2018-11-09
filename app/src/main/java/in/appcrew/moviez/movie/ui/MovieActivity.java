@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import in.appcrew.moviez.R;
-import in.appcrew.moviez.moviedetail.MovieDetailActivity;
+import in.appcrew.moviez.moviedetail.ui.MovieDetailActivity;
 import in.appcrew.moviez.utils.ActivityUtils;
 
 

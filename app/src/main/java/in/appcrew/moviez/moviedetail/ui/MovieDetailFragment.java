@@ -1,4 +1,4 @@
-package in.appcrew.moviez.moviedetail;
+package in.appcrew.moviez.moviedetail.ui;
 
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableField;
@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import entity.MovieData;
 import in.appcrew.moviez.databinding.FragmentMovieDetailBinding;
+import in.appcrew.moviez.moviedetail.viewmodel.MovieDetailViewModel;
 
 /**
  * A simple {@link Fragment} subclass.

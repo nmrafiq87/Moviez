@@ -1,6 +1,5 @@
-package in.appcrew.moviez.moviedetail;
+package in.appcrew.moviez.moviedetail.ui;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.databinding.MovieDetailRowBinding;
+import in.appcrew.moviez.moviedetail.viewmodel.MovieDetailItemViewModel;
 
 /**
  * Created by practo on 04/12/17.

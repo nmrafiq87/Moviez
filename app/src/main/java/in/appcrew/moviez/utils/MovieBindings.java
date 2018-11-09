@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.movie.ui.MovieActivity;
-import in.appcrew.moviez.moviedetail.MovieDetailAdapter;
+import in.appcrew.moviez.moviedetail.ui.MovieDetailAdapter;
 
 /**
  * Created by nmrafiq on 17/11/17.

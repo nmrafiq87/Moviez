@@ -1,4 +1,4 @@
-package in.appcrew.moviez.moviedetail;
+package in.appcrew.moviez.moviedetail.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 import android.databinding.BaseObservable;

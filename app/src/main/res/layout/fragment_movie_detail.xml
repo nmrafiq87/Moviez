@@ -5,11 +5,11 @@
         <import type="android.view.View" />
         <variable
             name="view"
-            type="in.appcrew.moviez.moviedetail.MovieDetailFragment" />
+            type="in.appcrew.moviez.moviedetail.ui.MovieDetailFragment" />
 
         <variable
             name="viewmodel"
-            type="in.appcrew.moviez.moviedetail.MovieDetailViewModel" />
+            type="in.appcrew.moviez.moviedetail.viewmodel.MovieDetailViewModel" />
 
     </data>
 

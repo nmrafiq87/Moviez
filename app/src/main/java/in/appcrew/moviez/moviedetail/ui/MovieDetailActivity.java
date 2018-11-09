@@ -1,8 +1,9 @@
-package in.appcrew.moviez.moviedetail;
+package in.appcrew.moviez.moviedetail.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import in.appcrew.moviez.moviedetail.viewmodel.MovieDetailViewModel;
 import repository.MovieRepository;
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.utils.ViewModelHolder;

@@ -1,4 +1,4 @@
-package in.appcrew.moviez.moviedetail;
+package in.appcrew.moviez.moviedetail.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
@@ -65,7 +65,6 @@ public class MovieDetailViewModel extends ViewModel {
         return arrList;
     }
 
-
     public String getGenre(List<Genre> genreList){
         StringBuilder sb = new StringBuilder();
         for (int i=0;i<genreList.size();i++){
@@ -85,6 +84,4 @@ public class MovieDetailViewModel extends ViewModel {
         sb.deleteCharAt(sb.lastIndexOf(","));
         return sb.toString();
     }
-
-
 }

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import entity.Genre;
 import entity.MovieData;
 import entity.SpokenLanguage;
-import in.appcrew.moviez.moviedetail.MovieDetailViewModel;
+import in.appcrew.moviez.moviedetail.viewmodel.MovieDetailViewModel;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
