@@ -7,11 +7,11 @@
         <import type="android.view.View" />
         <variable
             name="result"
-            type="data.Result" />
+            type="entity.Result" />
 
         <variable
             name="viewmodel"
-            type="in.appcrew.moviez.movie.MovieItemViewModel"/>
+            type="in.appcrew.moviez.movie.viewmodel.MovieItemViewModel"/>
 
     </data>
         <FrameLayout

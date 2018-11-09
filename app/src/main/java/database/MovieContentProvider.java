@@ -1,4 +1,4 @@
-package data.source;
+package database;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -7,8 +7,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 

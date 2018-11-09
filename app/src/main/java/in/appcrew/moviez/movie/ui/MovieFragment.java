@@ -1,4 +1,4 @@
-package in.appcrew.moviez.movie;
+package in.appcrew.moviez.movie.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -13,10 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
-import data.MoviesUiState;
-import data.Result;
-import data.source.MovieRepository;
+import entity.MoviesUiState;
+import entity.Result;
+import repository.MovieRepository;
 import in.appcrew.moviez.databinding.FragmentMovieBinding;
+import in.appcrew.moviez.movie.viewmodel.MoviesViewModel;
 
 
 public class MovieFragment extends Fragment  {

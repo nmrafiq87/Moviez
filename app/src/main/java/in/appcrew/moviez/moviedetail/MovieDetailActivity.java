@@ -3,10 +3,10 @@ package in.appcrew.moviez.moviedetail;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import data.source.MovieRepository;
+import repository.MovieRepository;
 import in.appcrew.moviez.R;
-import in.appcrew.moviez.ViewModelHolder;
-import in.appcrew.moviez.movie.MovieActivity;
+import in.appcrew.moviez.utils.ViewModelHolder;
+import in.appcrew.moviez.movie.ui.MovieActivity;
 import in.appcrew.moviez.utils.ActivityUtils;
 
 public class MovieDetailActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package in.appcrew.moviez.movie;
+package in.appcrew.moviez.movie.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import in.appcrew.moviez.moviedetail.MovieDetailActivity;
 import in.appcrew.moviez.utils.ActivityUtils;
 
 
-public class MovieActivity extends AppCompatActivity implements MovieItemNavigator{
+public class MovieActivity extends AppCompatActivity implements MovieItemNavigator {
     public static final String BASE_URL = "https://api.themoviedb.org/3/";
     public static final String API_KEY = "0e12101a22c608993caa890e9dabea92";
     public static final String IMAGE_API = "https://image.tmdb.org/t/p/w500/";

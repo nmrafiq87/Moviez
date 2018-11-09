@@ -11,7 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import data.MovieData;
+import entity.MovieData;
 import in.appcrew.moviez.databinding.FragmentMovieDetailBinding;
 
 /**

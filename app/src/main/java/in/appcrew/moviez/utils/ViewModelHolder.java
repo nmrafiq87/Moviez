@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package in.appcrew.moviez;
+package in.appcrew.moviez.utils;
 
 
 import android.os.Bundle;

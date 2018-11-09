@@ -1,4 +1,4 @@
-package in.appcrew.moviez.movie;
+package in.appcrew.moviez.movie.ui;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import data.Result;
+import entity.Result;
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.databinding.MovieRowBinding;
+import in.appcrew.moviez.movie.viewmodel.MovieItemViewModel;
 
 /**
  * Created by nmrafiq on 27/10/17.

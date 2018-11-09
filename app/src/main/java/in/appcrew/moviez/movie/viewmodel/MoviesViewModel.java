@@ -1,19 +1,16 @@
-package in.appcrew.moviez.movie;
+package in.appcrew.moviez.movie.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
-import android.databinding.ObservableBoolean;
-import android.graphics.Movie;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import data.Movies;
-import data.MoviesUiState;
-import data.Result;
-import data.source.MovieRepository;
+import entity.Movies;
+import entity.MoviesUiState;
+import entity.Result;
+import repository.MovieRepository;
 
 /**
  * Created by nmrafiq on 10/11/17.

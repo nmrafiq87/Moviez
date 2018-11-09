@@ -6,11 +6,11 @@
         <import type="android.view.View" />
         <variable
             name="view"
-            type="in.appcrew.moviez.movie.MovieFragment" />
+            type="in.appcrew.moviez.movie.ui.MovieFragment" />
 
         <variable
             name="viewmodel"
-            type="in.appcrew.moviez.movie.MoviesViewModel" />
+            type="in.appcrew.moviez.movie.viewmodel.MoviesViewModel" />
 
     </data>
     <FrameLayout

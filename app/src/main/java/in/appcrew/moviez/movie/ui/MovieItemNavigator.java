@@ -1,4 +1,4 @@
-package in.appcrew.moviez.movie;
+package in.appcrew.moviez.movie.ui;
 
 /**
  * Created by nmrafiq on 10/11/17.

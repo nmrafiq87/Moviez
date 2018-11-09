@@ -5,7 +5,7 @@ import android.app.Application;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
 
-import in.appcrew.moviez.movie.MovieActivity;
+import in.appcrew.moviez.movie.ui.MovieActivity;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

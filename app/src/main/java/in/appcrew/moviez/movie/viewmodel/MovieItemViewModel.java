@@ -1,11 +1,12 @@
-package in.appcrew.moviez.movie;
+package in.appcrew.moviez.movie.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableField;
 
 import java.lang.ref.WeakReference;
 
-import data.Result;
+import entity.Result;
+import in.appcrew.moviez.movie.ui.MovieItemNavigator;
 
 /**
  * Created by nmrafiq on 16/11/17.

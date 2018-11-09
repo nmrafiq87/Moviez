@@ -1,28 +1,18 @@
 package in.appcrew.moviez.moviedetail;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
 import android.databinding.ObservableArrayList;
-import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
-import android.graphics.Movie;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
-import data.Genre;
-import data.MovieData;
-import data.SpokenLanguage;
-import data.source.MovieRepository;
+import entity.Genre;
+import entity.MovieData;
+import entity.SpokenLanguage;
+import repository.MovieRepository;
 
 /**
  * Created by nmrafiq on 30/11/17.

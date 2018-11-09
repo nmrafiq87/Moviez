@@ -1,4 +1,4 @@
-package data;
+package entity;
 
 /**
  * Created by nmrafiq on 30/11/17.

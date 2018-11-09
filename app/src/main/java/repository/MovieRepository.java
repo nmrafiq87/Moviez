@@ -1,4 +1,4 @@
-package data.source;
+package repository;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -6,23 +6,18 @@ import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Movie;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 
-import ApiInterface.MovieInterface;
-import data.MovieData;
-import data.Movies;
-import data.Result;
+import database.MovieContentProvider;
+import database.MoviePersistentContract;
+import entity.MovieData;
+import entity.Movies;
 import in.appcrew.moviez.MovieApplication;
-import in.appcrew.moviez.movie.MovieActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-import static in.appcrew.moviez.movie.MovieActivity.API_KEY;
+import static in.appcrew.moviez.movie.ui.MovieActivity.API_KEY;
 
 public class MovieRepository{
     private Context context;

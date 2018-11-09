@@ -1,7 +1,7 @@
-package ApiInterface;
+package repository;
 
-import data.MovieData;
-import data.Movies;
+import entity.MovieData;
+import entity.Movies;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
