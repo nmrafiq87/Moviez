@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import in.appcrew.moviez.R;
 import in.appcrew.moviez.database.movie.MovieEntity;
 import in.appcrew.moviez.entity.MovieData;
 import in.appcrew.moviez.databinding.FragmentMovieDetailBinding;
-import in.appcrew.moviez.movie.viewmodel.MoviesViewModel;
 import in.appcrew.moviez.moviedetail.viewmodel.MovieDetailViewModel;
 import in.appcrew.moviez.repository.MovieRepository;
 

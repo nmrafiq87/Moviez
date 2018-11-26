@@ -92,7 +92,6 @@ public class MovieFragment extends Fragment  {
 
                 int totalItemCount = linearLayoutManager.getItemCount();
                 int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                Log.d("Total Last Visible Item", totalItemCount + " " + lastVisibleItem);
                 if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                     moviesViewModel.loadTasks(false);
                 }

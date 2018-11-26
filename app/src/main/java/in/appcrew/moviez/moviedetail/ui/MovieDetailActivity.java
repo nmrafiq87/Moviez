@@ -11,7 +11,6 @@ public class MovieDetailActivity extends AppCompatActivity {
 
 
     private MovieDetailFragment mMovieDetailFragment;
-    public static final String TAG = "MOVIE_DETAIL_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
