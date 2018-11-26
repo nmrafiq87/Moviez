@@ -20,14 +20,12 @@ import retrofit2.Response;
 import static in.appcrew.moviez.movie.ui.MovieActivity.API_KEY;
 
 public class MovieRepository{
-    private Context context;
     private MovieDao movieDao;
     private MutableLiveData<Movies> moviesLivedata = new MutableLiveData<>();
     private MutableLiveData<MovieData> moviesDetailLivedata = new MutableLiveData<>();
     private ExecutorService executorService;
 
     public MovieRepository(Context context){
-        this.context = context;
         MoviesDatabase db = MoviesDatabase.getDatabase(context);
         executorService = Executors.newSingleThreadExecutor();
         movieDao = db.movieDao();

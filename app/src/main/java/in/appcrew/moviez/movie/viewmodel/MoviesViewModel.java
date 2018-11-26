@@ -18,19 +18,14 @@ import in.appcrew.moviez.repository.MovieRepository;
 
 public class MoviesViewModel extends ViewModel {
 
-    public MutableLiveData<ArrayList<Result>> movieList = new MutableLiveData<>();
-    public MutableLiveData<MoviesUiState> movieStateLiveData = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Result>> movieList = new MutableLiveData<>();
+    private MutableLiveData<MoviesUiState> movieStateLiveData = new MutableLiveData<>();
     private ArrayList<Result> movieListTemp = new ArrayList<>();
-    public final MutableLiveData<Boolean> dataLoading = new MutableLiveData<>();
     private MovieRepository mMovieRepository;
     private int currentPage = 1;
-    private boolean isLoading = false;
+
     public void setMovieRepository(MovieRepository movieRepository){
         this.mMovieRepository = movieRepository;
-    }
-
-    public boolean isLoading(){
-        return isLoading;
     }
 
     public void loadTasks(final boolean showLoadingUI) {
@@ -43,25 +38,12 @@ public class MoviesViewModel extends ViewModel {
         movieStateLiveData.setValue(moviesUiState);
     }
 
-    public MutableLiveData<MoviesUiState> setMoviesUI(Movies movie){
-        MoviesUiState uiState = new MoviesUiState();
-        boolean isError;
-        if (movie != null && movie.getPage() != null) {
-            currentPage = movie.getPage() + 1;
-            isError = false;
-        } else {
-            isError = true;
-        }
-        uiState.setCurrentPage(currentPage);
-        uiState.setShowProgress(false);
-        uiState.setLoading(false);
-        uiState.setLoadingError(isError);
-        movieStateLiveData.setValue(uiState);
-        return movieStateLiveData;
-    }
-
     public LiveData<ArrayList<Result>> getMovies(){
         return Transformations.switchMap(mMovieRepository.getMovies(), movies-> setUpData(movies));
+    }
+
+    public LiveData<MoviesUiState> getUIState() {
+        return movieStateLiveData;
     }
 
     private LiveData<ArrayList<Result>> setUpData(Movies movies){

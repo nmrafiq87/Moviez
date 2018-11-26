@@ -75,7 +75,7 @@ public class MovieFragment extends Fragment  {
         };
 
         moviesViewModel.getMovies().observe(this,movieListObserver);
-        moviesViewModel.movieStateLiveData.observe(this,moviesUiStateObserver);
+        moviesViewModel.getUIState().observe(this,moviesUiStateObserver);
     }
 
     private void setupListAdapter() {
