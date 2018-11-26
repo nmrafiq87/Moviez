@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import in.appcrew.moviez.moviedetail.viewmodel.MovieDetailViewModel;
-import repository.MovieRepository;
+import in.appcrew.moviez.repository.MovieRepository;
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.utils.ViewModelHolder;
 import in.appcrew.moviez.movie.ui.MovieActivity;

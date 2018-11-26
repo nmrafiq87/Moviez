@@ -1,4 +1,4 @@
-package entity;
+package in.appcrew.moviez.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;

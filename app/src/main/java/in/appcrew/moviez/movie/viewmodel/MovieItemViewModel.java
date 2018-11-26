@@ -5,7 +5,7 @@ import android.databinding.ObservableField;
 
 import java.lang.ref.WeakReference;
 
-import entity.Result;
+import in.appcrew.moviez.entity.Result;
 import in.appcrew.moviez.movie.ui.MovieItemNavigator;
 
 /**

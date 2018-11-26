@@ -1,4 +1,4 @@
-package database.movie;
+package in.appcrew.moviez.database.movie;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
@@ -12,17 +12,16 @@ public abstract class MoviesDatabase extends RoomDatabase {
 
     private static volatile MoviesDatabase INSTANCE;
 
-    static MoviesDatabase getDatabase(final Context context) {
+    public static MoviesDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (MoviesDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            MoviesDatabase.class, "MovieEntity")
+                            MoviesDatabase.class, "Movie")
                             .build();
                 }
             }
         }
         return INSTANCE;
     }
-
 }

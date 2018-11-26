@@ -1,4 +1,4 @@
-package entity;
+package in.appcrew.moviez.entity;
 
 /**
  * Created by nmrafiq on 30/11/17.
@@ -29,7 +29,7 @@ public class MovieData implements Parcelable
     private Integer budget;
     @SerializedName("genres")
     @Expose
-    private List<entity.Genre> genres = null;
+    private List<in.appcrew.moviez.entity.Genre> genres = null;
     @SerializedName("homepage")
     @Expose
     private String homepage;
@@ -112,7 +112,7 @@ public class MovieData implements Parcelable
         this.backdropPath = ((String) in.readValue((String.class.getClassLoader())));
         this.belongsToCollection = ((Object) in.readValue((Object.class.getClassLoader())));
         this.budget = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        in.readList(this.genres, (entity.Genre.class.getClassLoader()));
+        in.readList(this.genres, (in.appcrew.moviez.entity.Genre.class.getClassLoader()));
         this.homepage = ((String) in.readValue((String.class.getClassLoader())));
         this.id = ((String) in.readValue((Integer.class.getClassLoader())));
         this.imdbId = ((String) in.readValue((String.class.getClassLoader())));
@@ -121,11 +121,11 @@ public class MovieData implements Parcelable
         this.overview = ((String) in.readValue((String.class.getClassLoader())));
         this.popularity = ((Double) in.readValue((Double.class.getClassLoader())));
         this.posterPath = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.productionCompanies, (entity.ProductionCompany.class.getClassLoader()));
+        in.readList(this.productionCompanies, (in.appcrew.moviez.entity.ProductionCompany.class.getClassLoader()));
         this.releaseDate = ((String) in.readValue((String.class.getClassLoader())));
         this.revenue = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.runtime = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        in.readList(this.spokenLanguages, (entity.SpokenLanguage.class.getClassLoader()));
+        in.readList(this.spokenLanguages, (in.appcrew.moviez.entity.SpokenLanguage.class.getClassLoader()));
         this.status = ((String) in.readValue((String.class.getClassLoader())));
         this.tagline = ((String) in.readValue((String.class.getClassLoader())));
         this.title = ((String) in.readValue((String.class.getClassLoader())));
@@ -170,11 +170,11 @@ public class MovieData implements Parcelable
         this.budget = budget;
     }
 
-    public List<entity.Genre> getGenres() {
+    public List<in.appcrew.moviez.entity.Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<entity.Genre> genres) {
+    public void setGenres(List<in.appcrew.moviez.entity.Genre> genres) {
         this.genres = genres;
     }
 

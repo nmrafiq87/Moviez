@@ -8,10 +8,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import entity.MovieData;
+import in.appcrew.moviez.R;
+import in.appcrew.moviez.database.movie.MovieEntity;
+import in.appcrew.moviez.entity.MovieData;
 import in.appcrew.moviez.databinding.FragmentMovieDetailBinding;
 import in.appcrew.moviez.moviedetail.viewmodel.MovieDetailViewModel;
 
@@ -26,6 +29,7 @@ public class MovieDetailFragment extends Fragment {
     private MovieDetailViewModel mMovieDetailViewModel;
     public ObservableField<MovieData> movieDetail = new ObservableField<>();
     public ObservableField<Integer> movieFavourite = new ObservableField<>();
+    public ObservableField<MovieEntity> movieLocal = new ObservableField<>();
     public ObservableArrayList<String> arrayDescList = new ObservableArrayList<>();
     public ObservableArrayList<String> arrayTitleList = new ObservableArrayList<>();
     private String movieId;
@@ -68,11 +72,11 @@ public class MovieDetailFragment extends Fragment {
     }
 
     private void initTitleList() {
-        arrayTitleList.add("Description");
-        arrayTitleList.add("Rating");
-        arrayTitleList.add("Rating Count");
-        arrayTitleList.add("Genre");
-        arrayTitleList.add("Spoken Language");
+        arrayTitleList.add(getResources().getString(R.string.description));
+        arrayTitleList.add(getResources().getString(R.string.rating));
+        arrayTitleList.add(getResources().getString(R.string.rating_count));
+        arrayTitleList.add(getResources().getString(R.string.genre));
+        arrayTitleList.add(getResources().getString(R.string.spoken_language));
     }
 
     @Override
@@ -82,11 +86,13 @@ public class MovieDetailFragment extends Fragment {
         mMovieDetailViewModel.movieLiveData.observe(this, movieData -> {
             if (movieData != null){
                 movieDetail.set(movieData);
+                movieFavourite.set(movieData.getLove());
             }
         });
-        mMovieDetailViewModel.movieLocalLiveData.observe(this, favouriteData -> {
+
+        mMovieDetailViewModel.movieEntityLiveData.observe(this, favouriteData -> {
             if (favouriteData != null){
-                this.movieFavourite.set(favouriteData.getLove());
+                this.movieLocal.set(favouriteData);
             }
         }) ;
         mMovieDetailViewModel.mDescList.observe(this, arrDetail -> {

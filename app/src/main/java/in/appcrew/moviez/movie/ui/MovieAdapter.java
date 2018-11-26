@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import entity.Result;
+import in.appcrew.moviez.entity.Result;
 import in.appcrew.moviez.R;
 import in.appcrew.moviez.databinding.MovieRowBinding;
 import in.appcrew.moviez.movie.viewmodel.MovieItemViewModel;

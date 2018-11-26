@@ -14,8 +14,8 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 
-import entity.Movies;
-import entity.Result;
+import in.appcrew.moviez.entity.Movies;
+import in.appcrew.moviez.entity.Result;
 import in.appcrew.moviez.movie.viewmodel.MoviesViewModel;
 
 import static org.mockito.Matchers.any;

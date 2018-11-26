@@ -1,4 +1,4 @@
-package entity;
+package in.appcrew.moviez.entity;
 
 /**
  * Created by nmrafiq on 30/11/17.

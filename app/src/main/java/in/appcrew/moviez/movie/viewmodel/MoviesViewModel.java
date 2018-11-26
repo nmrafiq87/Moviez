@@ -7,10 +7,10 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 
-import entity.Movies;
-import entity.MoviesUiState;
-import entity.Result;
-import repository.MovieRepository;
+import in.appcrew.moviez.entity.Movies;
+import in.appcrew.moviez.entity.MoviesUiState;
+import in.appcrew.moviez.entity.Result;
+import in.appcrew.moviez.repository.MovieRepository;
 
 /**
  * Created by nmrafiq on 10/11/17.

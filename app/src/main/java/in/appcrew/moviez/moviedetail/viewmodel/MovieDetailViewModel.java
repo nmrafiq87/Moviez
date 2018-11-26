@@ -1,6 +1,7 @@
 package in.appcrew.moviez.moviedetail.viewmodel;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableArrayList;
@@ -9,18 +10,19 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import entity.Genre;
-import entity.MovieData;
-import entity.SpokenLanguage;
-import repository.MovieRepository;
+import in.appcrew.moviez.database.movie.MovieEntity;
+import in.appcrew.moviez.entity.Genre;
+import in.appcrew.moviez.entity.MovieData;
+import in.appcrew.moviez.entity.SpokenLanguage;
+import in.appcrew.moviez.repository.MovieRepository;
 
 /**
  * Created by nmrafiq on 30/11/17.
  */
 
 public class MovieDetailViewModel extends ViewModel {
+    public LiveData<MovieEntity> movieEntityLiveData;
     public LiveData<MovieData> movieLiveData;
-    public LiveData<MovieData> movieLocalLiveData;
     public LiveData<ArrayList<String>> mDescList;
     public ObservableArrayList<String> mTitleList = new ObservableArrayList<>();
     private MovieRepository mMovieRepository;
@@ -34,24 +36,30 @@ public class MovieDetailViewModel extends ViewModel {
         loadMovies(movieId);
     }
 
-    // Load movie from remote repository
+    // Load movie from remote in.appcrew.moviez.repository
     public void loadMovies(final String movieId){
         mMovieRepository.getMovieDetailRemote(movieId);
-        mMovieRepository.getMovie(movieId);
-        movieLocalLiveData = mMovieRepository.getMovieLocalLiveData();
-        movieLiveData = mMovieRepository.getMovieRemoteLiveData();
+        movieLiveData = mMovieRepository.getMovieDetailLiveData();
+        movieEntityLiveData = mMovieRepository.getMovieFromRoom(movieId);
         mDescList = Transformations.map(movieLiveData, movieData -> getDescList(movieData));
     }
 
     public void loveClicked(){
-       saveMovie();
+        if (movieLiveData.getValue() != null){
+            saveMovie(movieLiveData.getValue().getId());
+        }
     }
 
-    public void saveMovie(){
-        if (movieLocalLiveData.getValue() != null && !TextUtils.isEmpty(movieLocalLiveData.getValue().getId())){
-            mMovieRepository.updateMovie(movieLocalLiveData.getValue());
-        } else {
-            mMovieRepository.insertMovie(movieLiveData.getValue());
+    public void saveMovie(String movieId){
+        int favourite = 0;
+        if (movieLiveData.getValue() != null){
+            if (movieEntityLiveData.getValue() != null){
+                favourite = movieEntityLiveData.getValue().isFavourite;
+            }
+            MovieEntity movieEntity = new MovieEntity();
+            movieEntity.movieId = movieId;
+            movieEntity.isFavourite = favourite == 0 ? 1 : 0;
+            mMovieRepository.insertMovieRoom(movieEntity);
         }
     }
 

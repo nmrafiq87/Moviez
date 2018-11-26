@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="result"
-            type="entity.Result" />
+            type="in.appcrew.moviez.entity.Result" />
 
         <variable
             name="viewmodel"

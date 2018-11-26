@@ -1,5 +1,5 @@
 
-package entity;
+package in.appcrew.moviez.entity;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

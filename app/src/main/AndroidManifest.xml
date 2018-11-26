@@ -25,13 +25,6 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <provider
-            android:name="database.MovieContentProvider"
-            android:authorities="in.appcrew.moviez.entity.provider"
-            android:exported="false"
-            android:protectionLevel="signature"
-            android:syncable="true"/>
-
     </application>
 
 </manifest>

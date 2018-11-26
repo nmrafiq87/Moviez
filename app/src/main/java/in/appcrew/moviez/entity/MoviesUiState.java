@@ -1,4 +1,4 @@
-package entity;
+package in.appcrew.moviez.entity;
 
 public class MoviesUiState {
     private int currentPage = 0;

@@ -75,6 +75,6 @@
             android:layout_marginRight="@dimen/margin_16"
             app:layout_anchor="@id/appbar"
             app:layout_anchorGravity="bottom|right|end"
-            app:movieLove="@{view.movieFavourite.get()}"/>
+            app:movieLove="@{view.movieLocal.get().isFavourite}"/>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

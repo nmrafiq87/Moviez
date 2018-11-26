@@ -12,9 +12,9 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 
-import entity.Genre;
-import entity.MovieData;
-import entity.SpokenLanguage;
+import in.appcrew.moviez.entity.Genre;
+import in.appcrew.moviez.entity.MovieData;
+import in.appcrew.moviez.entity.SpokenLanguage;
 import in.appcrew.moviez.moviedetail.viewmodel.MovieDetailViewModel;
 
 import static org.mockito.Matchers.any;

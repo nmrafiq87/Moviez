@@ -1,7 +1,7 @@
-package repository;
+package in.appcrew.moviez.repository;
 
-import entity.MovieData;
-import entity.Movies;
+import in.appcrew.moviez.entity.MovieData;
+import in.appcrew.moviez.entity.Movies;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

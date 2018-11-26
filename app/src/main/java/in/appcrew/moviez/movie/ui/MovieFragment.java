@@ -13,9 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
-import entity.MoviesUiState;
-import entity.Result;
-import repository.MovieRepository;
+import in.appcrew.moviez.entity.MoviesUiState;
+import in.appcrew.moviez.entity.Result;
+import in.appcrew.moviez.repository.MovieRepository;
 import in.appcrew.moviez.databinding.FragmentMovieBinding;
 import in.appcrew.moviez.movie.viewmodel.MoviesViewModel;
 
@@ -73,7 +73,6 @@ public class MovieFragment extends Fragment  {
                 mMovieFragBinding.progressBar.setVisibility(uiState.isShowProgress() ? View.VISIBLE : View.GONE);
             }
         };
-
 
         moviesViewModel.getMovies().observe(this,movieListObserver);
         moviesViewModel.movieStateLiveData.observe(this,moviesUiStateObserver);
