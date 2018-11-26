@@ -1,5 +1,6 @@
 package in.appcrew.moviez.moviedetail.ui;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableField;
 import android.os.Bundle;
@@ -16,7 +17,9 @@ import in.appcrew.moviez.R;
 import in.appcrew.moviez.database.movie.MovieEntity;
 import in.appcrew.moviez.entity.MovieData;
 import in.appcrew.moviez.databinding.FragmentMovieDetailBinding;
+import in.appcrew.moviez.movie.viewmodel.MoviesViewModel;
 import in.appcrew.moviez.moviedetail.viewmodel.MovieDetailViewModel;
+import in.appcrew.moviez.repository.MovieRepository;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,25 +49,22 @@ public class MovieDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         fragmentMovieDetailBinding = FragmentMovieDetailBinding.inflate(inflater,container,false);
-        fragmentMovieDetailBinding.setView(this);
-        fragmentMovieDetailBinding.setViewmodel(mMovieDetailViewModel);
         return fragmentMovieDetailBinding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mMovieDetailViewModel = ViewModelProviders.of(MovieDetailFragment.this).get(MovieDetailViewModel.class);
+        mMovieDetailViewModel.setMovieRepository(new MovieRepository(getActivity()));
+        fragmentMovieDetailBinding.setViewmodel(mMovieDetailViewModel);
+        fragmentMovieDetailBinding.setView(this);
         initTitleList();
         setUpAdapter();
     }
 
     public static MovieDetailFragment newInstance() {
         return  new MovieDetailFragment();
-    }
-
-
-    public void setDetailViewModel(MovieDetailViewModel mMovieDetailViewModel){
-        this.mMovieDetailViewModel = mMovieDetailViewModel;
     }
 
     public void setMovieId(@NonNull String movieId){

@@ -55,7 +55,7 @@ public class MovieFragment extends Fragment  {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        moviesViewModel = ViewModelProviders.of(getActivity()).get(MoviesViewModel.class);
+        moviesViewModel = ViewModelProviders.of(MovieFragment.this).get(MoviesViewModel.class);
         moviesViewModel.setMovieRepository(new MovieRepository(getActivity()));
         mMovieFragBinding.setViewmodel(moviesViewModel);
         mMovieFragBinding.setView(this);

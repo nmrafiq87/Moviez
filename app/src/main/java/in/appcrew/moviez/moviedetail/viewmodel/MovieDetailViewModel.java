@@ -24,14 +24,12 @@ public class MovieDetailViewModel extends ViewModel {
     public LiveData<MovieEntity> movieEntityLiveData;
     public LiveData<MovieData> movieLiveData;
     public LiveData<ArrayList<String>> mDescList;
-    public ObservableArrayList<String> mTitleList = new ObservableArrayList<>();
     private MovieRepository mMovieRepository;
 
 
-    public MovieDetailViewModel(MovieRepository movieRepository){
+    public void setMovieRepository(MovieRepository movieRepository){
         this.mMovieRepository = movieRepository;
     }
-
     public void start(String movieId){
         loadMovies(movieId);
     }
