@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Moviez.iml" filepath="$PROJECT_DIR$/Moviez.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/Moviez-app.iml" filepath="$PROJECT_DIR$/app/Moviez-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/workspace-Moviez.iml" filepath="$PROJECT_DIR$/workspace-Moviez.iml" />
     </modules>
   </component>
 </project>
